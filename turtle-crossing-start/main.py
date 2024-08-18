@@ -10,7 +10,7 @@ screen.tracer(0)
 
 # *Player Turtle
 player = Player()
-screen.listen()
+screen.listen() 
 screen.onkeypress(player.move, "Up")
 
 # *Car Manager

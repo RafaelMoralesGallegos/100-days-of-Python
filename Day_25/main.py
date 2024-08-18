@@ -7,14 +7,14 @@ screen.title("U.S. States Game")
 WIDTH, HEIGHT = 800, 550
 screen.setup(WIDTH + 4, HEIGHT + 8)
 
-image = r"Day_25\blank_states_img.gif"
+image = r"blank_states_img.gif"
 screen.addshape(image)
 turtle.shape(image)
 pen = turtle.Turtle()
 pen.hideturtle()
 pen.penup()
 
-states_data = pd.read_csv(r"Day_25\50_states.csv")
+states_data = pd.read_csv(r"50_states.csv")
 state_names = states_data["state"].to_list()
 guessed_states = []
 
@@ -48,7 +48,8 @@ while len(guessed_states) < 50:
     try:
         if answer_state == "Exit":
             missing_states = pd.DataFrame(state_names)
-            missing_states.to_csv(r"Day_25\states_to_learn.csv")
+            missing_states.to_csv(r"states_to_learn.csv")
+            break
         if check_answer_in_df(answer_state, state_names):
             state_info = get_cords_answer(answer_state, states_data)
             create_name_on_screen(pen, state_info[0], state_info[1])

@@ -1,8 +1,6 @@
 PLACEHOLDER = "[name]"
 
-with open(
-    "D:/Documentos/Udemy/Python/100_days_of_Python/Mail Merge Project Start/Input/Names/invited_names.txt"
-) as file:
+with open(r"Input\Names\invited_names.txt", "r") as file:
     Names = file.readlines()
 clean_names = []
 for name in Names:

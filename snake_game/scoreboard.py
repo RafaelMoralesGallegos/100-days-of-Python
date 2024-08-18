@@ -1,6 +1,7 @@
 from turtle import Turtle
+
 ALIGMENT = "center"
-FONT = ('Arial', 12, 'normal')
+FONT = ("Arial", 12, "normal")
 
 
 class Scoreboard(Turtle):
@@ -12,7 +13,9 @@ class Scoreboard(Turtle):
         self.hideturtle()
         self.speed("fastest")
         self.score = 0
-        with open(r"D:\Documentos\Udemy\Python\100_days_of_Python\snake_game\highscore.txt") as file:
+        with open(
+            r"C:\Users\rafae\OneDrive\Documents\Python\100_days_of_Python\snake_game\highscore.txt"
+        ) as file:
             content = file.read()
             self.highscore = int(content)
         self.update_scoreboard()
@@ -24,7 +27,10 @@ class Scoreboard(Turtle):
     def reset(self):
         if self.score > self.highscore:
             self.highscore = self.score
-            with open(r"D:\Documentos\Udemy\Python\100_days_of_Python\snake_game\highscore.txt", mode="w") as file:
+            with open(
+                r"C:\Users\rafae\OneDrive\Documents\Python\100_days_of_Python\snake_game\highscore.txt",
+                mode="w",
+            ) as file:
                 file.write(str(self.highscore))
 
         self.score = 0
@@ -36,5 +42,8 @@ class Scoreboard(Turtle):
 
     def update_scoreboard(self):
         self.clear()
-        self.write(f"Score: {self.score} High Score: {self.highscore}", align=ALIGMENT,
-                   font=FONT)
+        self.write(
+            f"Score: {self.score} High Score: {self.highscore}",
+            align=ALIGMENT,
+            font=FONT,
+        )
