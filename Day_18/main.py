@@ -1,7 +1,6 @@
-from turtle import Turtle
-from turtle import Screen
-import turtle as t
 import random
+import turtle as t
+from turtle import Screen, Turtle
 
 tim = Turtle()
 tim.shape("turtle")
@@ -14,6 +13,7 @@ def change_color():
     G = random.randint(0, 255)
 
     tim.color(R, G, B)
+
 
 # * For a Square
 # for _ in range(4):
@@ -53,7 +53,7 @@ tim.speed("fastest")
 
 
 def draw_spirograh(size_of_gap):
-    for _ in range(int(360/size_of_gap)):
+    for _ in range(int(360 / size_of_gap)):
         change_color()
         tim.circle(100)
         tim.setheading(tim.heading() + size_of_gap)
