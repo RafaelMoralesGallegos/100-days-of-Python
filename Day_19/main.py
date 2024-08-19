@@ -1,5 +1,5 @@
-from turtle import Turtle, Screen
 import random
+from turtle import Screen, Turtle
 
 screen = Screen()
 screen.setup(width=800, height=290)
