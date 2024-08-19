@@ -1,9 +1,10 @@
-from turtle import Screen
-from paddle import Paddle
-from ball import Ball
-from scoreboard import Scoreboard
-from ball_net import Ball_Net
 import time
+from turtle import Screen
+
+from ball import Ball
+from ball_net import Ball_Net
+from paddle import Paddle
+from scoreboard import Scoreboard
 
 # * Create the Screen
 screen = Screen()
