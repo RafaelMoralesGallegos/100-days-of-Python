@@ -8,7 +8,8 @@ class QuizBrain:
         question = self.question_list[self.question_number]
         self.question_number += 1
         user_answer = input(
-            f"Q.{self.question_number}: {question.text} (True/False)?: ")
+            f"Q.{self.question_number}: {question.text} (True/False)?: "
+        )
         self.check_answer(user_answer, question.answer)
 
     def still_has_questions(self):
@@ -16,7 +17,7 @@ class QuizBrain:
 
     def check_answer(self, u_answer, q_answer):
         if u_answer.lower() == q_answer.lower():
-            print('You got it right!')
+            print("You got it right!")
             self.score += 1
         else:
             print("That is Wrong.")
