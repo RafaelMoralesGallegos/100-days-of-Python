@@ -51,13 +51,10 @@
 # data_dict = {"students": ["Amy", "James", "Angela"], "scores": [76, 56, 45]}
 # data = pd.DataFrame(data_dict)
 # data.to_csv("new_data.csv")
-# import pandas as pd
+import pandas as pd
 
-# df = pd.read_csv("squirrel_data.csv")
-# fur_color = df["Primary Fur Color"].value_counts()
-# df_fc = fur_color.to_frame().reset_index()
-# df_fc = df_fc.rename(columns={"Primary Fur Color": "Fur Color"})
-# df_fc.to_csv("fur_color.csv")
-import sys
-
-print(sys.path)
+df = pd.read_csv("squirrel_data.csv")
+fur_color = df["Primary Fur Color"].value_counts()
+df_fc = fur_color.to_frame().reset_index()
+df_fc = df_fc.rename(columns={"Primary Fur Color": "Fur Color"})
+df_fc.to_csv("fur_color.csv")

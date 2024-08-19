@@ -1,6 +1,7 @@
-import turtle
-import pandas as pd
 import ctypes
+import turtle
+
+import pandas as pd
 
 screen = turtle.Screen()
 screen.title("U.S. States Game")
