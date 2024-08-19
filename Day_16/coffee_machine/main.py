@@ -1,5 +1,5 @@
-from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
+from menu import Menu
 from money_machine import MoneyMachine
 
 coin = MoneyMachine()
@@ -16,7 +16,9 @@ while not turn_off:
         coin.report()
     elif coffee == "espresso" or coffee == "latte" or coffee == "cappuccino":
         asked_coffee = menu.find_drink(coffee)
-        if machine.is_resource_sufficient(asked_coffee) and coin.make_payment(asked_coffee.cost):
+        if machine.is_resource_sufficient(asked_coffee) and coin.make_payment(
+            asked_coffee.cost
+        ):
             machine.make_coffee(asked_coffee)
     else:
         print("Invalid Imput")
