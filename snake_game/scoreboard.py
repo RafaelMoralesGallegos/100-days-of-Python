@@ -1,3 +1,4 @@
+import os
 from turtle import Turtle
 
 ALIGMENT = "center"
@@ -13,9 +14,9 @@ class Scoreboard(Turtle):
         self.hideturtle()
         self.speed("fastest")
         self.score = 0
-        with open(
-            r"C:\Users\rafae\OneDrive\Documents\Python\100_days_of_Python\snake_game\highscore.txt"
-        ) as file:
+        self.current_dir = os.path.dirname(__file__)
+        self.file_path = os.path.join(self.current_dir, "highscore.txt")
+        with open(self.file_path, "r") as file:
             content = file.read()
             self.highscore = int(content)
         self.update_scoreboard()
@@ -27,10 +28,7 @@ class Scoreboard(Turtle):
     def reset(self):
         if self.score > self.highscore:
             self.highscore = self.score
-            with open(
-                r"C:\Users\rafae\OneDrive\Documents\Python\100_days_of_Python\snake_game\highscore.txt",
-                mode="w",
-            ) as file:
+            with open(self.file_path, mode="w") as file:
                 file.write(str(self.highscore))
 
         self.score = 0
