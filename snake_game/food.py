@@ -1,5 +1,5 @@
-from turtle import Turtle
 import random
+from turtle import Turtle
 
 
 class Food(Turtle):
@@ -8,7 +8,7 @@ class Food(Turtle):
         self.shape("circle")
         self.pu()
         self.shapesize(stretch_len=0.5, stretch_wid=0.5)
-        self.color('red')
+        self.color("red")
         self.speed("fastest")
         self.refresh()
 

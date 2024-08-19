@@ -2,12 +2,14 @@ import smtplib as smtp
 from datetime import datetime
 
 import requests
+
 from config import python_mail_password
 
 MY_LAT = 20.620343
 MY_LNG = -103.444140
 MY_POSITION = (MY_LAT, MY_LNG)
 MY_EMAIL = "ultratumba25@gmail.com"
+
 
 def in_position(my_position) -> bool:
     try:
@@ -28,7 +30,7 @@ def in_position(my_position) -> bool:
     )
 
 
-def is_dark()->bool:
+def is_dark() -> bool:
     parameters = {
         "lat": MY_LAT,
         "lng": MY_LNG,
@@ -45,6 +47,7 @@ def is_dark()->bool:
     time_now = datetime.now().hour
     return sunrise > time_now or time_now > sunset
 
+
 # -------10--------20--------30--------40--------50--------60--------70#
 if in_position(MY_POSITION) and is_dark():
     with smtp.SMTP("smtp.gmail.com") as connection:
@@ -53,6 +56,8 @@ if in_position(MY_POSITION) and is_dark():
         connection.sendmail(
             from_addr=MY_EMAIL,
             to_addrs=MY_EMAIL,
-            msg=f"Subject:Look Up\n\nLook Up Stupid!!
-            \nISS is here don't be shuch a falire",
+            msg=(
+                f"Subject:Look Up\n\nLook Up Stupid!!"
+                f"\nISS is here don't be shuch a falire"
+            ),
         )

@@ -8,7 +8,7 @@ class Ball(Turtle):
         self.color("white")
         self.pu()
         self.setheading(45)
-        self.prev_position = (self.pos())
+        self.prev_position = self.pos()
         self.x_move = 10
         self.y_move = 10
         self.ball_speed = 0.1

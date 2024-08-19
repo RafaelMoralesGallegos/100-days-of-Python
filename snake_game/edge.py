@@ -13,7 +13,7 @@ class Edge(Turtle):
         self.paint_margin()
 
     def paint_margin(self):
-        half_cor = (self.screensize[0]/2)-20
+        half_cor = (self.screensize[0] / 2) - 20
         self.goto(-half_cor, half_cor)
         self.pd()
         for _ in range(0, 4):

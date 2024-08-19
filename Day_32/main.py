@@ -4,15 +4,16 @@ import random
 import smtplib as smtp
 
 import pandas as pd
+
 from password import python_mail_password
 
 # Email
 my_email = "ultratumba25@gmail.com"
 
 # Files
-df = pd.read_csv(r"Day_32\birthdays.csv")
+df = pd.read_csv(r"birthdays.csv")
 birthday_info = pd.DataFrame.to_dict(df, orient="records")
-filename = random.choice(glob.glob(r"Day_32\letter_templates/*.txt"))
+filename = random.choice(glob.glob(r"letter_templates/*.txt"))
 
 # Today
 today = (dt.datetime.now().month, dt.datetime.now().day)

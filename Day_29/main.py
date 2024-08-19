@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 
 import pyperclip
+
 from letters import letters
 
 GREEN = "#9bdeac"
@@ -43,13 +44,13 @@ def save_to_file(website, username, password):
             website.get(): {"email": username.get(), "password": password.get()}
         }
         try:
-            with open(r"Day_29\data.json", "r") as data_file:
+            with open(r"data.json", "r") as data_file:
                 data = json.load(data_file)
                 data.update(new_data)
         except FileNotFoundError:
             data = new_data
 
-        with open(r"Day_29\data.json", "w") as data_file:
+        with open(r"data.json", "w") as data_file:
             json.dump(data, data_file, indent=4)
 
         clear_entrys(website, username, password)
@@ -98,7 +99,7 @@ password = StringVar(window, "")
 
 # Canvas
 canvas = Canvas(window, width=200, height=200)
-lock_img = PhotoImage(file=r"Day_29\logo.png")
+lock_img = PhotoImage(file=r"logo.png")
 canvas.create_image(100, 100, image=lock_img)
 canvas.grid(row=0, column=1, sticky="nsew")
 

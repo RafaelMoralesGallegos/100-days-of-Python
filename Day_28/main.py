@@ -83,7 +83,7 @@ title_label = Label(
 title_label.grid(row=0, column=1, sticky="nsew")
 
 canvas = Canvas(window, width=200, height=224, bg=YELLOW, highlightthickness=0)
-tomato_img = PhotoImage(file=r"Day_28\tomato.png")
+tomato_img = PhotoImage(file=r"tomato.png")
 canvas.create_image(100, 112, image=tomato_img)
 timer_text = canvas.create_text(
     100, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold")
@@ -99,12 +99,7 @@ reset_button.grid(row=2, column=2, sticky="w")
 check_mark = "✔"
 
 check_lable = Label(
-    window,
-    justify="center",
-    anchor="center",
-    fg=GREEN,
-    bg=YELLOW,
-    font=20,
+    window, justify="center", anchor="center", fg=GREEN, bg=YELLOW, font=20
 )
 check_lable.grid(row=3, column=1)
 

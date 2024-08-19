@@ -22,7 +22,7 @@ class QuizUI(tk.Tk):
         )
         self.canvas.grid(row=1, column=0, columnspan=2, pady=20)
 
-        self.true_img = tk.PhotoImage(file=r"Day_34\images\true.png")
+        self.true_img = tk.PhotoImage(file=r"images\true.png")
         self.true_button = tk.Button(
             image=self.true_img,
             highlightthickness=0,
@@ -30,7 +30,7 @@ class QuizUI(tk.Tk):
         )
         self.true_button.grid(row=2, column=0)
 
-        self.false_img = tk.PhotoImage(file=r"Day_34\images\false.png")
+        self.false_img = tk.PhotoImage(file=r"images\false.png")
         self.false_button = tk.Button(
             image=self.false_img,
             highlightthickness=0,

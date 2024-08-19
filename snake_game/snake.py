@@ -18,8 +18,8 @@ class Snake:
             self.add_segment(position)
 
     def move(self):
-        for seg_num in range(len(self.segments)-1, 0, -1):
-            position = self.segments[seg_num-1].pos()
+        for seg_num in range(len(self.segments) - 1, 0, -1):
+            position = self.segments[seg_num - 1].pos()
             self.segments[seg_num].goto(position)
         self.head.forward(10)
 
