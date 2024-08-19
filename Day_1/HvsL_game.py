@@ -1,8 +1,8 @@
-from art import logo
-from art import vs
-from game_data import data  # There are 50 data points in file
 import random as random
 from os import system
+
+from art import logo, vs
+from game_data import data  # There are 50 data points in file
 
 score = 0
 data_list = random.sample(range(0, len(data)), 2)
@@ -17,11 +17,13 @@ def game():
     if score > 0:
         print(f"You're right! Current score: {score}")
     print(
-        f"Compare A: {A_data['name']}, a {A_data['description']}, from {A_data['country']}, {A_data['follower_count']}"
+        f"Compare A: {A_data['name']}, a {A_data['description']},"
+        f" from {A_data['country']}, {A_data['follower_count']}"
     )
     print(vs)
     print(
-        f"Againts B: {B_data['name']}, a {B_data['description']}, from {B_data['country']}, {B_data['follower_count']}"
+        f"Againts B: {B_data['name']}, a {B_data['description']},"
+        f" from {B_data['country']}, {B_data['follower_count']}"
     )
     followers = input("Who has more followers? Type 'A' or 'B': ").upper()
     if followers == "A":
