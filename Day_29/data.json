@@ -1,6 +1,10 @@
 {
-  "Amazon": {
-    "email": "rafamoralesg25@gmail.com",
-    "password": "koCSS$*O92J0FK8i"
-  }
+    "Amazon": {
+        "email": "rafamoralesg25@gmail.com",
+        "password": "koCSS$*O92J0FK8i"
+    },
+    "OpenWeatherMap": {
+        "email": "rafamoralesg25@gmail.com",
+        "password": "u%*N)7joLzh7L"
+    }
 }
