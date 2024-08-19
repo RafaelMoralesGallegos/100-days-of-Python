@@ -1,7 +1,8 @@
 import time
 from turtle import Screen
-from player import Player
+
 from car_manager import CarManager
+from player import Player
 from scoreboard import Scoreboard
 
 screen = Screen()
@@ -10,7 +11,7 @@ screen.tracer(0)
 
 # *Player Turtle
 player = Player()
-screen.listen() 
+screen.listen()
 screen.onkeypress(player.move, "Up")
 
 # *Car Manager
