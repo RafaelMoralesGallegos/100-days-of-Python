@@ -1,27 +1,63 @@
-import numpy as np
+import turtle
 import pandas as pd
+import ctypes
 
-# data = pd.read_csv(r"Day_25\weather_data.csv")
+screen = turtle.Screen()
+screen.title("U.S. States Game")
+WIDTH, HEIGHT = 800, 550
+screen.setup(WIDTH + 4, HEIGHT + 8)
 
-# new_dict = data.to_dict()
-# # print(new_dict)
+image = r"blank_states_img.gif"
+screen.addshape(image)
+turtle.shape(image)
+pen = turtle.Turtle()
+pen.hideturtle()
+pen.penup()
 
-# temp_list = data["temp"].to_list()
-# # print(data["temp"].mean())
-# # print(np.mean(temp_list))
+states_data = pd.read_csv(r"50_states.csv")
+state_names = states_data["state"].to_list()
+guessed_states = []
 
-# # print(data["temp"].max())
-# # print(np.max(temp_list))
 
-# # print(data["condition"])
-# # print(data.condition)
+def check_answer_in_df(answer, list) -> bool:
+    if answer.title() in list:
+        list.remove(answer.title())
+        return True
+    else:
+        return False
 
-# # print(data[data.temp == data.temp.max()])
-# monday_temp = (9 / 5) * int(data[data.day == "Monday"].temp.iloc[0]) + 32
-# print(monday_temp)
 
-df = pd.read_csv(r"Day_25\squirrel_data.csv")
-fur_color = df["Primary Fur Color"].value_counts()
-df_fur = fur_color.reset_index()
-df_fur.columns = ["Primary Fur Color", "Count"]
-df_fur.to_csv(r"Day_25\Fur_color.csv")
+def get_cords_answer(answer, df):
+    state_data = df[df["state"] == answer.title()]
+    name = answer.title()
+    x = state_data["x"].item()
+    y = state_data["y"].item()
+    return [name, (x, y)]
+
+
+def create_name_on_screen(turtle, name, cordinates):
+    turtle.goto(cordinates[0], cordinates[1])
+    turtle.write(name)
+
+
+while len(guessed_states) < 50:
+    answer_state = screen.textinput(
+        title=f"{len(guessed_states)}/50 States Correct",
+        prompt="What's another state's name?",
+    )
+    try:
+        if answer_state == "Exit":
+            missing_states = pd.DataFrame(state_names)
+            missing_states.to_csv(r"states_to_learn.csv")
+            break
+        if check_answer_in_df(answer_state, state_names):
+            state_info = get_cords_answer(answer_state, states_data)
+            create_name_on_screen(pen, state_info[0], state_info[1])
+            guessed_states.append(state_info[0])
+    except AttributeError:
+        ctypes.windll.user32.MessageBoxW(0, "Wrtie 'Exit' if done", "Cancel Button", 1)
+
+ctypes.windll.user32.MessageBoxW(
+    0, "Congratulations Click on Screen to exit", "You WIN!!!!", 1
+)
+screen.exitonclick()
