@@ -1,1 +1,1 @@
-python_mail_password = "rwrt radv szhq oxlc"
+python_mail_password = ""
