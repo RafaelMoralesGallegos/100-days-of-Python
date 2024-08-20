@@ -1,9 +1,10 @@
+import os
 import smtplib as smtp
 
 import requests
 
 my_email = "ultratumba25@gmail.com"
-python_mail_password = ""
+python_mail_password = os.environ.get("mail_pass")
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.5/forecast"
 api_key = "5ef603fc669d46927a2e8efd7fce003e"
