@@ -7,7 +7,8 @@ my_email = "ultratumba25@gmail.com"
 python_mail_password = os.environ.get("mail_pass")
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.5/forecast"
-api_key = "5ef603fc669d46927a2e8efd7fce003e"
+api_key = os.environ.get("owm_api")
+print(api_key)
 MY_LAT = 20.671955
 MY_LNG = -103.416504
 parameters = {"lat": MY_LAT, "lon": MY_LNG, "cnt": 5, "appid": api_key}
