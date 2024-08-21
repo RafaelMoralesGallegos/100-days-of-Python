@@ -1,6 +1,8 @@
 import datetime as dt
 import os
 import smtplib as smtp
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 import requests
 from pandas.tseries.offsets import BDay
@@ -10,11 +12,14 @@ COMPANY_NAME = "Tesla"
 
 my_email = "ultratumba25@gmail.com"
 python_mail_password = os.environ.get("MAIL_PASS")
+yesterday = ""
 
 
 # Functions
 def get_two_days_before():
     """Get the 2 Buissness days before"""
+    global yesterday
+
     today = dt.date.today()
     yesterday = today - BDay(1)
     before_y = today - BDay(2)
@@ -39,11 +44,14 @@ def get_diference_stocks(data) -> float:
 def check_amount(difference: float):
     """Check to see if amount change beyond 5%"""
     if abs(difference) > 0.05:
-        print("Get News")
-        return if_positive(difference)
+        values = if_positive(difference)
+        news = set_news_usabe(get_three_news())
+        send_email(news, values)
     else:
-        print("NOT Get News")
-        return if_positive(difference)
+        values = if_positive(difference)
+        values = if_positive(difference)
+        news = set_news_usabe(get_three_news())
+        send_email(news, values)
 
 
 def if_positive(difference: float):
@@ -51,7 +59,49 @@ def if_positive(difference: float):
     return difference, difference > 0
 
 
-## STEP 1: Use https://www.alphavantage.co
+def get_three_news():
+    news_api_key = os.environ.get("API_KEY_NEWS")
+    news_url = "https://newsapi.org/v2/everything"
+    news_param = {
+        "q": COMPANY_NAME,
+        "from": yesterday,
+        "to": yesterday,
+        "sortBy": "popularity",
+        "apiKey": news_api_key,
+        "pageSize": 3,
+    }
+    news_response = requests.get(news_url, params=news_param)
+    news_response.raise_for_status()
+    news_data = news_response.json()
+    return news_data
+
+
+def send_email(data, values):
+    msg = MIMEMultipart()
+    msg["From"] = my_email
+    msg["To"] = my_email
+    msg["Subject"] = f"TSLA: {round(values[0]*100)}%"
+
+    # Attach the text body to the email message
+    msg.attach(MIMEText(data, "plain", "utf-8"))
+
+    with smtp.SMTP("smtp.gmail.com", 587) as connection:
+        connection.starttls()
+        connection.login(my_email, password=python_mail_password)
+        connection.send_message(msg)
+
+
+def set_news_usabe(news):
+    news_print = " "
+    for article in news["articles"]:
+        news_print += (
+            f"Headline: {article["title"]}\n"
+            f"Brief: {article["description"]}\n"
+            f"URL: {article["url"]}\n\n"
+        )
+    return news_print
+
+
 api_key_stock = os.environ.get("API_KEY_ALPHA_STOCK")
 param_stock = {
     "function": "TIME_SERIES_DAILY",
@@ -64,41 +114,3 @@ stock_response.raise_for_status()
 stock_data = stock_response.json()
 
 results = check_amount(get_diference_stocks(stock_data))
-
-
-## STEP 2: Use https://newsapi.org
-# TODO: Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
-news_api_key = os.environ.get("API_KEY_NEWS")
-news_url = "https://newsapi.org/v2/everything"
-news_param = {
-    "q": COMPANY_NAME,
-    "sortBy": "publishedAt",
-    "apiKey": news_api_key,
-}
-news_response = requests.get(news_url, params=news_param)
-news_response.raise_for_status()
-news_data = news_response.json()
-print(news_data)
-
-## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number.
-
-
-# Optional: Format the SMS message like this:
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
-# with smtp.SMTP("smtp.gmail.com") as connection:
-#     connection.starttls()
-#     connection.login(my_email, password=python_mail_password)
-#     connection.sendmail(
-#         from_addr=my_email,
-#         to_addrs=my_email,
-#         msg=f"Subject:Rain\n\nBring an Umbrella Fool!!",
-#     )
