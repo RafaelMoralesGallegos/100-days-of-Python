@@ -1,14 +1,17 @@
+import os
 import smtplib as smtp
 from datetime import datetime
 
 import requests
+from dotenv import load_dotenv
 
-from config import python_mail_password
+load_dotenv()
 
 MY_LAT = 20.620343
 MY_LNG = -103.444140
 MY_POSITION = (MY_LAT, MY_LNG)
-MY_EMAIL = "ultratumba25@gmail.com"
+MY_EMAIL = os.environ.get("ULTRA_MAIL_MAIL")
+MY_PASSWORD = os.environ.get("ULTRA_MAIL_PASS")
 
 
 def in_position(my_position) -> bool:
@@ -52,7 +55,7 @@ def is_dark() -> bool:
 if in_position(MY_POSITION) and is_dark():
     with smtp.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
-        connection.login(MY_EMAIL, password=python_mail_password)
+        connection.login(MY_EMAIL, password=MY_PASSWORD)
         connection.sendmail(
             from_addr=MY_EMAIL,
             to_addrs=MY_EMAIL,

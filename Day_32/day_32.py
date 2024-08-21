@@ -1,18 +1,20 @@
 import datetime as dt
+import os
 import random
 import smtplib as smtp
 
-from password import python_mail_password
+from dotenv import load_dotenv
 
 # *Email
-my_email = "ultratumba25@gmail.com"
-password = python_mail_password
+load_dotenv()
+my_email = os.environ.get("ULTRA_MAIL_MAIL")
+password = os.environ.get("ULTRA_MAIL_PASS")
 # with smtp.SMTP("smtp.gmail.com") as connection:
 #     connection.starttls()
 #     connection.login(my_email, password=password)
 #     connection.sendmail(
 #         from_addr=my_email,
-#         to_addrs="rafamoralesg25@gmail.com",
+#         to_addrs=,
 #         msg="Subject:Hello\n\nEres Puto",
 #     )
 
@@ -22,7 +24,7 @@ weekday = now.weekday()
 # date_of_birth = dt.datetime(year=2000, month=2, day=25)
 
 # *Challenge 1
-with open(r"Day_32\quotes.txt", "r") as data_file:
+with open(r"quotes.txt", "r") as data_file:
     quotes = [quote for quote in data_file]
 
 if weekday == 0:
