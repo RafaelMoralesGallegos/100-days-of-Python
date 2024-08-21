@@ -47,11 +47,6 @@ def check_amount(difference: float):
         values = if_positive(difference)
         news = set_news_usabe(get_three_news())
         send_email(news, values)
-    else:
-        values = if_positive(difference)
-        values = if_positive(difference)
-        news = set_news_usabe(get_three_news())
-        send_email(news, values)
 
 
 def if_positive(difference: float):
