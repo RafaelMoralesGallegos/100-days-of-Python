@@ -6,7 +6,7 @@ import requests
 from pandas.tseries.offsets import BDay
 
 STOCK = "TSLA"
-COMPANY_NAME = "Tesla Inc"
+COMPANY_NAME = "Tesla"
 
 my_email = "ultratumba25@gmail.com"
 python_mail_password = os.environ.get("MAIL_PASS")
@@ -64,7 +64,6 @@ stock_response.raise_for_status()
 stock_data = stock_response.json()
 
 results = check_amount(get_diference_stocks(stock_data))
-print(results)
 
 
 ## STEP 2: Use https://newsapi.org
@@ -73,8 +72,7 @@ news_api_key = os.environ.get("API_KEY_NEWS")
 news_url = "https://newsapi.org/v2/everything"
 news_param = {
     "q": COMPANY_NAME,
-    "from": str(dt.date.today()),
-    "sortBy": "popularity",
+    "sortBy": "publishedAt",
     "apiKey": news_api_key,
 }
 news_response = requests.get(news_url, params=news_param)
