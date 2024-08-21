@@ -1,6 +1,10 @@
-import requests
+import os
 
-TOKEN = "The Blood Wolf"
+import requests
+from dotenv import dotenv_values, load_dotenv
+
+load_dotenv()
+TOKEN = os.environ.get("PIXELA_TOKEN")
 USERNAME = "ultratumba"
 
 pixela_endp = "https://pixe.la/v1/users"
