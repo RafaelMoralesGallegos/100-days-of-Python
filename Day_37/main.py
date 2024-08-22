@@ -1,14 +1,17 @@
+import datetime as dt
 import os
 
 import requests
-from dotenv import dotenv_values, load_dotenv
+from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.environ.get("PIXELA_TOKEN")
 USERNAME = "ultratumba"
+READ_ID = "ultrareading123"
 
 pixela_endp = "https://pixe.la/v1/users"
 graph_endp = f"{pixela_endp}/{USERNAME}/graphs"
+pixel_endp = f"{graph_endp}/{READ_ID}"
 
 user_param = {
     "token": TOKEN,
@@ -18,7 +21,7 @@ user_param = {
 }
 
 graph_param = {
-    "id": "ultrareading123",
+    "id": READ_ID,
     "name": "My Reading Habbit",
     "unit": "page",
     "type": "int",
@@ -26,7 +29,10 @@ graph_param = {
     "timezone": "America/Mexico_City",
 }
 
+today = str(dt.date.today()).replace("-", "")
+pixel_add_param = {"date": today, "quantity": "10"}
+
 headers = {"X-USER-TOKEN": TOKEN}
 
-# response = requests.post(url=graph_endp, json=graph_param, headers=headers)
-# print(response.text)
+response = requests.post(url=pixel_endp, json=pixel_add_param, headers=headers)
+print(response.text)
