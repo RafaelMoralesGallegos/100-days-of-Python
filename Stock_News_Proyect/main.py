@@ -5,13 +5,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 import requests
+from dotenv import load_dotenv
 from pandas.tseries.offsets import BDay
 
+load_dotenv()
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla"
 
-my_email = "ultratumba25@gmail.com"
-python_mail_password = os.environ.get("MAIL_PASS")
+my_email = os.environ.get("ULTRA_MAIL_MAIL")
+python_mail_password = os.environ.get("ULTRA_MAIL_PASS")
 yesterday = ""
 
 
