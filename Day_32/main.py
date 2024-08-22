@@ -1,14 +1,16 @@
 import datetime as dt
 import glob
+import os
 import random
 import smtplib as smtp
 
 import pandas as pd
+from dotenv import load_dotenv
 
-from password import python_mail_password
-
-# Email
-my_email = "ultratumba25@gmail.com"
+# *Email
+load_dotenv()
+my_email = os.environ.get("ULTRA_MAIL_MAIL")
+password = os.environ.get("ULTRA_MAIL_PASS")
 
 # Files
 df = pd.read_csv(r"birthdays.csv")
@@ -27,7 +29,7 @@ for info in birthday_info:
 
         with smtp.SMTP("smtp.gmail.com") as connection:
             connection.starttls()
-            connection.login(my_email, password=python_mail_password)
+            connection.login(my_email, password=password)
             connection.sendmail(
                 from_addr=my_email,
                 to_addrs=info["email"],
