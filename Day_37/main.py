@@ -30,9 +30,17 @@ graph_param = {
 }
 
 today = str(dt.date.today()).replace("-", "")
-pixel_add_param = {"date": today, "quantity": "10"}
+pixel_add_param = {"date": today, "quantity": "5"}
+
+date_chage = "20240822"
+pixel_update_endp = f"{graph_endp}/{READ_ID}/{date_chage}"
+pixel_update_param = {"quantity": "8"}
 
 headers = {"X-USER-TOKEN": TOKEN}
 
-response = requests.post(url=pixel_endp, json=pixel_add_param, headers=headers)
+# response = requests.post(
+#     url=pixel_update_endp, json=pixel_update_param, headers=headers
+# )
+# response = requests.put(url=pixel_update_endp, json=pixel_update_param, headers=headers)
+response = requests.delete(url=pixel_update_endp, headers=headers)
 print(response.text)
