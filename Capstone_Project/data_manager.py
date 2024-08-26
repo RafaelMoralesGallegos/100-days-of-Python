@@ -9,4 +9,6 @@ class DataManager:
 
 
 if __name__ == "__main__":
-    print(True)
+    excel_sheet = DataManager()
+    print(excel_sheet.api_authorize)
+    print(excel_sheet.api_endpoint)
