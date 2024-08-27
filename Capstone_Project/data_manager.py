@@ -16,9 +16,7 @@ class DataManager:
     def get_from(self) -> dict:
         response = requests.get(url=self.api_endpoint, headers=self.api_headers)
         sheet_rows = response.json()
-        print(sheet_rows)
-        print(type(sheet_rows))
-        return sheet_rows
+        return sheet_rows["prices"]
 
 
 if __name__ == "__main__":
