@@ -13,10 +13,27 @@ class DataManager:
         self.api_authorize = os.environ.get("FLIGHT_DEALS_SHEETY_AUTH")
         self.api_headers = {"Authorization": self.api_authorize}
 
-    def get_from(self) -> dict:
+    def get_from(self) -> list:
+        """Return all the Rows brom the prices sheet"""
         response = requests.get(url=self.api_endpoint, headers=self.api_headers)
         sheet_rows = response.json()
         return sheet_rows["prices"]
+
+    def put_towards(self, data: dict) -> None:
+        """Modify the rows in Google Sheet"""
+        {"city": "Paris", "iataCode": "TESTING", "lowestPrice": 54, "id": 2}
+        parameters = {
+            "price": {
+                "city": data["city"],
+                "iataCode": data["iataCode"],
+                "lowestPrice": data["lowestPrice"],
+            }
+        }
+        requests.put(
+            url=f"{self.api_endpoint}/{data["id"]}",
+            headers=self.api_headers,
+            json=parameters,
+        )
 
 
 if __name__ == "__main__":
