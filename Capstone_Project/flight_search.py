@@ -1,4 +1,6 @@
+import datetime as dt
 import os
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -51,9 +53,9 @@ class FlightSearch:
         city_endpoint = (
             "https://test.api.amadeus.com/v1/reference-data/locations/cities"
         )
-        header = {"Authorization": f"Bearer {self._token}"}
+        headers = {"Authorization": f"Bearer {self._token}"}
         query = {"keyword": city_name, "max": "1", "include": "AIRPORTS"}
-        response = requests.get(url=city_endpoint, headers=header, params=query)
+        response = requests.get(url=city_endpoint, headers=headers, params=query)
         try:
             code = response.json()["data"][0]["iataCode"]
         except IndexError:
@@ -65,7 +67,46 @@ class FlightSearch:
         else:
             return code
 
+    def find_cheep_flights(self, origin_code, destination_code, from_time, to_time):
+        """We're looking only for non stop flights,
+        that leave anytime between tomorrow and in 6 months time.
+        We're also looking for round trips for 1 adult.
+        The currency of the price we get back should be in GBP.
+        """
+
+        flight_endpoint = "https://test.api.amadeus.com/v2/shopping/flight-offers"
+        headers = {"Authorization": f"Bearer {self._token}"}
+        query = {
+            "originLocationCode": origin_code,
+            "destinationLocationCode": destination_code,
+            "departureDate": from_time.strftime("%Y-%m-%d"),
+            "returnDate": to_time.strftime("%Y-%m-%d"),
+            "adults": 1,
+            "nonStop": "true",
+            "currencyCode": "GBP",
+            "max": "1",
+        }
+        response = requests.get(
+            url=flight_endpoint,
+            headers=headers,
+            params=query,
+        )
+        if response.status_code != 200:
+            print(f"check_flights() response code: {response.status_code}")
+            print(
+                "There was a problem with the flight search.\n"
+                "For details on status codes, check the API documentation:\n"
+                "https://developers.amadeus.com/self-service/category/flights/api-doc/"
+                "flight-offers-search/api-reference"
+            )
+            print("Response body:", response.text)
+            return None
+
+        return response.json()
+
 
 if __name__ == "__main__":
-    flight = FlightSearch()
-    flight._get_city_IATA("Paris")
+    flich_search = FlightSearch()
+    tomorrow = dt.date.today() + dt.timedelta(days=1)
+    return_date = tomorrow + dt.timedelta(days=7)
+    print(flich_search.find_cheep_flights("MEX", "PAR", tomorrow, return_date))
