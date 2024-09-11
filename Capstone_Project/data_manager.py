@@ -10,6 +10,7 @@ class DataManager:
     # This class is responsible for talking to the Google Sheet.
     def __init__(self) -> None:
         self.api_endpoint = os.environ.get("FLIGHT_DEALS_SHEETY_ENDPOINT")
+        self.api_user_endpoint = os.environ.get("USERS_SHEETY_ENDPOINT")
         self.api_authorize = os.environ.get("FLIGHT_DEALS_SHEETY_AUTH")
         self.api_headers = {"Authorization": self.api_authorize}
 
@@ -35,7 +36,14 @@ class DataManager:
             json=parameters,
         )
 
+    def get_customer_email(self):
+        response = requests.get(url=self.api_user_endpoint, headers=self.api_headers)
+        data = response.json()
+        customer_data = data["users"]
+        return customer_data
+
 
 if __name__ == "__main__":
     excel_sheet = DataManager()
-    excel_sheet.get_from()
+    data = excel_sheet.get_customer_email()
+    print(data)

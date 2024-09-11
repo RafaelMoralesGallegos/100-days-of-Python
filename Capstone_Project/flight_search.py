@@ -67,7 +67,9 @@ class FlightSearch:
         else:
             return code
 
-    def find_cheep_flights(self, origin_code, destination_code, from_time, to_time):
+    def find_cheep_flights(
+        self, origin_code, destination_code, from_time, to_time, nonStop=True
+    ):
         """We're looking only for non stop flights,
         that leave anytime between tomorrow and in 6 months time.
         We're also looking for round trips for 1 adult.
@@ -82,8 +84,8 @@ class FlightSearch:
             "departureDate": from_time.strftime("%Y-%m-%d"),
             "returnDate": to_time.strftime("%Y-%m-%d"),
             "adults": 1,
-            "nonStop": "true",
-            "currencyCode": "GBP",
+            "nonStop": str(nonStop).lower(),
+            "currencyCode": "MXN",
             "max": "1",
         }
         response = requests.get(
