@@ -9,9 +9,9 @@ yc_website = response.text
 soup = BeautifulSoup(yc_website, "html.parser")
 
 titles_atributes = soup.find_all(name="h3", class_="title")
-titles = []
+titles = [title.getText() for title in reversed(titles_atributes)]
 
-for title in reversed(titles_atributes):
-    titles.append(title.getText())
 
-print(titles)
+with open("100_movies/Movies.txt", "w", encoding="utf-8") as file:
+    for title in titles:
+        file.write(f"{title}\n")
