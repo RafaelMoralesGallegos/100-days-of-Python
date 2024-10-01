@@ -10,3 +10,10 @@ def main():
     response = requests.get(URL)
     billboard_hot = response.text
     soup = BeautifulSoup(billboard_hot, "html.parser")
+
+    titles = soup.select("li ul li h3")
+    song_names = [title.getText().strip() for title in titles]
+
+
+if __name__ == "__main__":
+    main()
