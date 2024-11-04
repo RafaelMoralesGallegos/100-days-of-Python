@@ -13,18 +13,38 @@ driver.get("https://www.python.org/")
 
 # print(f"Price is ${price_dollar.text}.{price_cents.text}")
 
-search_bar = driver.find_element(By.NAME, value="q")
-print(search_bar.get_attribute("placeholder"))
-button = driver.find_element(By.ID, value="submit")
-print(button.size)
-documentation_link = driver.find_element(
-    By.CSS_SELECTOR, value=".documentation-widget a"
-)
-print(documentation_link.text)
-bug_link = driver.find_element(
-    By.XPATH, value='//*[@id="site-map"]/div[2]/div/ul/li[3]/a'
-)
-print(bug_link.text)
+# search_bar = driver.find_element(By.NAME, value="q")
+# print(search_bar.get_attribute("placeholder"))
+# button = driver.find_element(By.ID, value="submit")
+# print(button.size)
+# documentation_link = driver.find_element(
+#     By.CSS_SELECTOR, value=".documentation-widget a"
+# )
+# print(documentation_link.text)
+# bug_link = driver.find_element(
+#     By.XPATH, value='//*[@id="site-map"]/div[2]/div/ul/li[3]/a'
+# )
+# print(bug_link.text)
 # To close driver
 # driver.close()
+
+# time = driver.find_elements(
+#     By.XPATH, value='//*[@id="content"]/div/section/div[3]/div[2]/div/ul/li/time'
+# )
+# text = driver.find_elements(
+#     By.XPATH, value='//*[@id="content"]/div/section/div[3]/div[2]/div/ul/li/a'
+# )
+
+
+section = driver.find_elements(By.CSS_SELECTOR, value=".event-widget li")
+
+update_dict = {
+    i: {
+        "time": element.find_element(By.TAG_NAME, value="time").text,
+        "name": element.find_element(By.TAG_NAME, value="a").text,
+    }
+    for i, element in enumerate(section)
+}
+print(update_dict)
+
 driver.quit()
