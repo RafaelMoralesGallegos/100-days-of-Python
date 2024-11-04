@@ -8,6 +8,7 @@ chrome_options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=chrome_options)
 driver.get("https://www.python.org/")
 
+# *346
 # price_dollar = driver.find_element(By.CLASS_NAME, value="a-price-whole")
 # price_cents = driver.find_element(By.CLASS_NAME, value="a-price-fraction")
 
@@ -27,7 +28,6 @@ driver.get("https://www.python.org/")
 # print(bug_link.text)
 # To close driver
 # driver.close()
-
 # time = driver.find_elements(
 #     By.XPATH, value='//*[@id="content"]/div/section/div[3]/div[2]/div/ul/li/time'
 # )
@@ -35,7 +35,7 @@ driver.get("https://www.python.org/")
 #     By.XPATH, value='//*[@id="content"]/div/section/div[3]/div[2]/div/ul/li/a'
 # )
 
-
+# * 347
 section = driver.find_elements(By.CSS_SELECTOR, value=".event-widget li")
 
 update_dict = {
