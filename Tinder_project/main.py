@@ -58,12 +58,20 @@ def login_to_tinder(driver):
         EC.element_to_be_clickable((By.XPATH, "//button[@data-testid='allow']"))
     )
     allow_loction.click()
-    time.sleep(2)
+    cookies = wait.until(
+        EC.element_to_be_clickable(
+            (
+                By.XPATH,
+                "//*[@id='t-1091891245']/div/div[2]/div/div/div[1]/div[1]/button",
+            )
+        )
+    )
+    cookies.click()
     notify_me = wait.until(
-        EC.element_to_be_clickable((By.XPATH, "//button[@data-testid='allow']"))
+        EC.element_to_be_clickable((By.XPATH, "//button[@data-testid='decline']"))
     )
     notify_me.click()
-    print("OK! let's go")
+    time.sleep(5)
 
 
 def swipe_right(driver, count):
@@ -108,9 +116,9 @@ def main():
     try:
         login_to_tinder(driver)
 
-        # # Swipe 100 times
+        # Swipe 100 times
         # for _ in range(100):
-        #     swipe_right(driver, 1)
+        swipe_right(driver, 1)
         #     handle_match_popup(driver)
 
     except Exception as e:
