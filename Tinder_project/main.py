@@ -25,14 +25,14 @@ def login_to_tinder(driver):
         EC.presence_of_element_located(
             (
                 By.XPATH,
-                "//*[@id='t636489831']/div/div[1]/div/main/div[1]/div/div/div/div/div/header/div/div[2]/div[2]/a",
+                "//div[contains(@class, 'lxn9zzn') and text()='Log in']",
             )
         )
     )
     login_button.click()
 
     # Select Google login
-    google_login = wait.until(EC.element_to_be_clickable((By.ID, "t1718323990")))
+    google_login = wait.until(EC.element_to_be_clickable((By.ID, "q-1115063307")))
     google_login.click()
 
     # Switch to Google login window
@@ -62,7 +62,7 @@ def login_to_tinder(driver):
         EC.element_to_be_clickable(
             (
                 By.XPATH,
-                "//*[@id='t-1091891245']/div/div[2]/div/div/div[1]/div[1]/button",
+                "//div[contains(@class, 'lxn9zzn') and text()='I accept']",
             )
         )
     )
@@ -74,21 +74,24 @@ def login_to_tinder(driver):
     time.sleep(5)
 
 
-def swipe_right(driver, count):
-    for _ in range(count):
-        try:
-            # Find and click the "Like" button
-            like_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable(
-                    (By.XPATH, "//button[contains(@aria-label, 'Like')]")
+def swipe_right(driver):
+    time.sleep(2)
+    try:
+        # Find and click the "Like" button
+        # Locate the element
+        like_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (
+                    By.XPATH,
+                    "//*[@id='main-content']/div[1]/div/div/div/div[1]/div/div/div[4]/div/div[4]/button",
                 )
             )
-            like_button.click()
-            time.sleep(2)
+        )
+        # Click the element
+        like_button.click()
 
-        except Exception as e:
-            print(f"Error swiping: {e}")
-            continue
+    except Exception as e:
+        print(f"Error swiping: {e}")
 
 
 def handle_match_popup(driver):
@@ -118,7 +121,7 @@ def main():
 
         # Swipe 100 times
         # for _ in range(100):
-        swipe_right(driver, 1)
+        swipe_right(driver)
         #     handle_match_popup(driver)
 
     except Exception as e:
