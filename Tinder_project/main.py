@@ -120,9 +120,8 @@ def main():
         login_to_tinder(driver)
 
         # Swipe 100 times
-        # for _ in range(100):
-        swipe_right(driver)
-        #     handle_match_popup(driver)
+        for _ in range(100):
+            swipe_right(driver)
 
     except Exception as e:
         print(f"An error occurred: {e}")
