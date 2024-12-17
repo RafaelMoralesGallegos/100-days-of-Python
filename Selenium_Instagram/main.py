@@ -3,6 +3,7 @@ import time
 
 from dotenv import load_dotenv
 from selenium import webdriver
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
@@ -56,16 +57,69 @@ class IntagramBot:
         )
         log_in_button.click()
 
-        cookies = self.wait.until(
+        not_now = self.wait.until(
             EC.element_to_be_clickable((By.XPATH, "//div[text()='Not now']"))
         )
-        cookies.click()
+        not_now.click()
 
     def find_followers(self):
-        self.driver.get("https://twitter.com/login")
+        """Find followers of the similar Instagram account"""
+        self.driver.get(INSTAGRAM_SIMILAR)  # type: ignore
+
+        time.sleep(3)
+
+        # Followers
+        followers = self.wait.until(
+            EC.presence_of_element_located((By.XPATH, "//a[text()=' followers']"))
+        )
+        followers.click()
+
+        time.sleep(3)
+        # Wait for the popup to appear
+        self.scr1 = self.wait.until(
+            EC.presence_of_element_located(
+                (
+                    By.XPATH,
+                    "/html/body/div[5]/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]",
+                )
+            )
+        )
+        # Scroll to the bottom of the popup
+        last_height = self.driver.execute_script(
+            "return arguments[0].scrollHeight", self.scr1
+        )
+        while True:
+            self.driver.execute_script(
+                "arguments[0].scrollTop = arguments[0].scrollHeight", self.scr1
+            )
+            # time.sleep(1.5)  # Wait for new content to load
+
+            new_height = self.driver.execute_script(
+                "return arguments[0].scrollHeight", self.scr1
+            )
+            if new_height == last_height:
+                break  # Stop scrolling if no new followers load
+            else:
+                last_height = new_height
+
+        print("Finished scrolling through the followers list.")
 
     def follow(self):
-        pass
+        # Check and update the (CSS) Selector for the "Follow" buttons as required.
+        time.sleep(2)
+        follow_buttons = self.driver.find_elements(
+            By.XPATH, '//button[.//div/div[text()="Follow"]]'
+        )
+
+        for button in follow_buttons:
+            try:
+                button.click()
+                print("Clicked a Follow button")
+                time.sleep(2)  # Add delay
+            except Exception as e:
+                print(f"Error clicking button: {e}")
+
+        print("Finished clicking all Follow buttons.")
 
 
 # Main execution
@@ -74,14 +128,7 @@ def main():
     bot.login()
     bot.find_followers()
     bot.follow()
-    # bot.perform_speed_test()
-    # print(f"Download Speed: {bot.down} Mbps")
-    # print(f"Upload Speed: {bot.up} Mbps")
-    # if bot.down < PROMISED_DOWNLOAD or bot.up < PROMISED_UPLOAD:
-    #     bot.post_complaint_on_twitter()
-    # else:
-    #     print("It's all good")
-    # bot.driver.quit()
+    bot.driver.quit()
 
 
 if __name__ == "__main__":
