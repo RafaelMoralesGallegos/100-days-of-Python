@@ -41,14 +41,35 @@ def get_properties(soup: BeautifulSoup) -> list:
 
 def get_infomation(card: BeautifulSoup) -> tuple:
     address_info = card.find("address").text.strip()  # type: ignore
+    new_address = remove_pipe_separator(address_info)
     property_url = card.find("a").get("href")  # type: ignore
     price = card.find("span", {"data-test": "property-card-price"}).text.strip()  # type: ignore
     new_price = remove_after_symbols(price)
 
-    return address_info, property_url, new_price
+    return new_address, property_url, new_price
+
+
+def remove_pipe_separator(address_str: str) -> str:
+    """Returns address in usable string format
+
+    Args:
+        address_str (str): address given by beautiful soup
+
+    Returns:
+        str: plane string of address now separated by only comas
+    """
+    return address_str.replace(" | ", ", ")
 
 
 def remove_after_symbols(price: str) -> str:
+    """Remove uncecessary additional sybols form price
+
+    Args:
+        price (str): price given by beautiful soup
+
+    Returns:
+        str: plane string of price with $ at the beginnig
+    """
     return re.split(r"[+/]", price, maxsplit=1)[0]
 
 
