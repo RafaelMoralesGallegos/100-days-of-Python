@@ -1,8 +1,10 @@
 import os
+import re
 import time
 
 import requests
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException
@@ -37,16 +39,24 @@ def get_properties(soup: BeautifulSoup) -> list:
     return property_cards
 
 
-def get_infomation():
-    pass
+def get_infomation(card: BeautifulSoup) -> tuple:
+    address_info = card.find("address").text.strip()  # type: ignore
+    property_url = card.find("a").get("href")  # type: ignore
+    price = card.find("span", {"data-test": "property-card-price"}).text.strip()  # type: ignore
+    new_price = remove_after_symbols(price)
+
+    return address_info, property_url, new_price
+
+
+def remove_after_symbols(price: str) -> str:
+    return re.split(r"[+/]", price, maxsplit=1)[0]
 
 
 # Main execution
 def main():
     soup = get_html()
     cards = get_properties(soup)
-    for card in cards:
-        print(type(card))
+    property_info = [get_infomation(card) for card in cards]
 
 
 if __name__ == "__main__":
