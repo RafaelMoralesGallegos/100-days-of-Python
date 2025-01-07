@@ -17,7 +17,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # Load environment variables
 load_dotenv()
-FORM = os.getenv("SF_RENT_FORM")
+SF_RENT_FORM = os.getenv("SF_RENT_FORM")
 ZILLOW = os.getenv("ZILLOW_CLONE_URL")
 
 
@@ -73,11 +73,29 @@ def remove_after_symbols(price: str) -> str:
     return re.split(r"[+/]", price, maxsplit=1)[0]
 
 
+class FromBot:
+
+    def __init__(self):
+        chrome_options = Options()
+        chrome_options.add_experimental_option("detach", True)  # Keep the browser open
+
+        # Set Chrome options
+        chrome_options = Options()
+        chrome_options.add_experimental_option("detach", True)  # Keep the browser open
+
+        # Initialize the driver with the options
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.maximize_window()
+        self.wait = WebDriverWait(self.driver, 30)
+
+
 # Main execution
 def main():
     soup = get_html()
     cards = get_properties(soup)
     property_info = [get_infomation(card) for card in cards]
+
+    bot = FromBot()
 
 
 if __name__ == "__main__":
