@@ -4,15 +4,10 @@ import time
 
 import requests
 from bs4 import BeautifulSoup
-from bs4.element import Tag
 from dotenv import load_dotenv
 from selenium import webdriver
-from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 # Load environment variables
@@ -73,7 +68,7 @@ def remove_after_symbols(price: str) -> str:
     return re.split(r"[+/]", price, maxsplit=1)[0]
 
 
-class FromBot:
+class FormBot:
 
     def __init__(self):
         """Creation of Form filler bot"""
@@ -92,6 +87,7 @@ class FromBot:
         Args:
             info (list): information of the rent
         """
+        time.sleep(3)
         self.driver.get(SF_RENT_FORM)  # type: ignore
 
         # Use field locators based on the DOM structure (adjust if necessary)
@@ -110,10 +106,11 @@ def main():
     cards = get_properties(soup)
     property_info = [get_infomation(card) for card in cards]
 
-    bot = FromBot()
-    bot.new_form(property_info[0])
-    # for property in property_info:
-    #     bot.new_form(property)
+    bot = FormBot()
+    for property in property_info:
+        bot.new_form(property)
+
+    bot.driver.quit()
 
 
 if __name__ == "__main__":
