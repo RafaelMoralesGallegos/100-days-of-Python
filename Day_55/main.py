@@ -6,12 +6,19 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World! and Fuck you</p>"
+    return (
+        "<h1 style='text-align: center'>Hello, World! and Fuck you</h1>"
+        "<p>this is text</p>"
+        '<img src="https://media0.giphy.com/media/kYNVwkyB3jkauFJrZA/giphy.webp?cid=790b7611p10rqzus34tbrbah720d7b4khy18rsr37ha4632r&ep=v1_gifs_trending&rid=giphy.webp&ct=g">'
+    )
 
 
 @app.route("/bye")
+# make_bold
+# make_emphasis
+# make_underlined
 def say_bye():
-    return "<h1>Bye</h1>"
+    return "Bye!"
 
 
 @app.route("/user/<username>/<int:years_old>")
