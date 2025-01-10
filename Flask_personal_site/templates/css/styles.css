@@ -1,0 +1,27 @@
+/*****************************TAG SELECTORS***********************************/
+body {
+  background-color: #f3f8ff;
+}
+h1 {
+  color: #002e94;
+}
+h3 {
+  color: #083aa9;
+}
+table {
+  border-spacing: 10px;
+}
+
+/******************************CLASS SELECTORS********************************/
+.hr_dotted {
+  border-style: none;
+  border-top: dotted 8px #d2daff;
+  width: 5%;
+}
+
+.hr_line {
+  background-color: #a6b1e1;
+  border-style: none;
+  height: 3px;
+  width: 95%;
+}
