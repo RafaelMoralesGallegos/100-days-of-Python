@@ -14,9 +14,9 @@ def say_bye():
     return "<h1>Bye</h1>"
 
 
-@app.route("/user/<username>")
-def greet(username):
-    return f"Hello {escape(username)}!"
+@app.route("/user/<username>/<int:years_old>")
+def greet(username, years_old):
+    return f"Hello {escape(username)}! you are {escape(years_old)}!"
 
 
 if __name__ == "__main__":
