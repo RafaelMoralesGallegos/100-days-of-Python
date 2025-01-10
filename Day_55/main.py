@@ -4,6 +4,27 @@ from markupsafe import escape
 app = Flask(__name__)
 
 
+def make_bold(function):
+    def wrapping_function():
+        return f"<b>{function()}</b>"
+
+    return wrapping_function
+
+
+def make_emphasis(function):
+    def wrapping_function():
+        return f"<em>{function()}</em>"
+
+    return wrapping_function
+
+
+def make_underlined(function):
+    def wrapping_function():
+        return f"<u>{function()}</u>"
+
+    return wrapping_function
+
+
 @app.route("/")
 def hello_world():
     return (
@@ -14,9 +35,9 @@ def hello_world():
 
 
 @app.route("/bye")
-# make_bold
-# make_emphasis
-# make_underlined
+@make_bold
+@make_emphasis
+@make_underlined
 def say_bye():
     return "Bye!"
 
