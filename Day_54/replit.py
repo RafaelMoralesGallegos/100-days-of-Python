@@ -1,20 +1,7 @@
 import time
 
-
 # current_time = time.time()
 # print(current_time)
-def delay_decorator(function):
-    """A decorator function is a function that wraps another function
-    and modifies their funcitonality"""
-
-    def wrapper_function():
-        time.sleep(2)
-        # Do somehting before
-        function()
-        function()
-        # Do somethinng after
-
-    return wrapper_function
 
 
 def speed_calc_decorator(function):
