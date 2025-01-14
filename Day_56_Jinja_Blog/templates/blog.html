@@ -6,10 +6,14 @@
     <meta name="description" content="Main Blog page.">
     <meta name="keywords"
           content="python, django, programming, web development">
-    <title>Document</title>
+    <title>Blogs</title>
   </head>
   <body>
-    <h1>My personal blogs</h1>
-    <p>{{ blogs }}</p>
+    <h1>My personal Blog's</h1>
+    {% for blog in blogs %}
+      <h2>{{ blog['title'] }}</h2>
+      <h3>{{ blog['subtitle'] }}</h3>
+      <p>{{ blog['body'] }}</p>
+    {% endfor %}
   </body>
 </html>
