@@ -56,8 +56,8 @@ def get_gender(name: str):
         return data["gender"]
 
 
-@app.route("/blog")
-def blog():
+@app.route("/blog/<int:number>")
+def url_blog(number):
     data = get_blog()
     return render_template("blog.html", blogs=data)
 
