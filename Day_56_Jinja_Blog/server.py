@@ -17,7 +17,9 @@ def home():
 
 @app.route("/guess/<name>")
 def get_guess(name):
-    return name
+    age = get_age(name)
+    gender = get_gender(name)
+    return render_template("guess.html", name=name, age=age, gender=gender)
 
 
 def get_age(name: str):
