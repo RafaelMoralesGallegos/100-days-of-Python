@@ -15,6 +15,11 @@ def home():
     return render_template("index.html", number=random_number, year=year)
 
 
+@app.route("/guess/<name>")
+def get_guess(name):
+    return name
+
+
 def get_age(name: str):
     """Get the age according to Agify
 
@@ -36,7 +41,21 @@ def get_age(name: str):
         return int(data["age"])
 
 
+def get_gender(name: str):
+    try:
+        parameters = {"name": name}
+        response = requests.get(url="https://api.genderize.io?", params=parameters)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"Error fetching agify data: {e}")
+        return False
+    else:
+        data = response.json()
+        return data["gender"]
+
+
 if __name__ == "__main__":
-    # app.run(debug=True)
-    name = input("give me name: ")
-    age = get_age(name)
+    app.run(debug=True)
+    # name = input("give me name: ")
+    # age = get_age(name)
+    # gender = get_gender(name)
