@@ -2,10 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="description" content="Day_57 web page Blog unique.">
+        <meta name="keywords" content="python, django, Jinja, web development">
         <title>Title</title>
-        <link href="https://fonts.googleapis.com/css2?family=Raleway"
-              rel="stylesheet">
         <link rel="stylesheet" href="../static/css/styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway">
     </head>
     <body>
         <div class="wrapper">
@@ -16,8 +17,8 @@
             </div>
             <div class="content">
                 <div class="card">
-                    <h2>Title</h2>
-                    <p>Post Body</p>
+                    <h2>{{ request.title }}</h2>
+                    <p>{{ request.body }}</p>
                 </div>
             </div>
         </div>
