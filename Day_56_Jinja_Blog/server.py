@@ -13,5 +13,6 @@ def home():
     return render_template("index.html", number=random_number, year=year)
 
 
+# Todo: Continue with Udemy code
 if __name__ == "__main__":
     app.run(debug=True)
