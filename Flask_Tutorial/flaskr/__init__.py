@@ -2,6 +2,8 @@ import os
 
 from flask import Flask
 
+from . import auth, db
+
 
 def create_app(test_config=None) -> Flask:
     """Creation of webpage using Flast framework
@@ -37,9 +39,10 @@ def create_app(test_config=None) -> Flask:
         return "Hello, World!"
 
     # Import databse form db file
-    from . import db
-
     db.init_app(app)
+
+    # Create blueprint for authorization
+    app.register_blueprint(auth.bp)
 
     return app
 
