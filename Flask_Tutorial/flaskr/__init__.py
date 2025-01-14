@@ -37,3 +37,12 @@ def create_app(test_config=None) -> Flask:
         return "Hello, World!"
 
     return app
+
+
+def main():
+    app = create_app()
+    app.run(debug=True)
+
+
+if __name__ == "__main__":
+    main()
