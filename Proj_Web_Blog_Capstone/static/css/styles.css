@@ -11006,6 +11006,7 @@ header.masthead {
   background-color: #6c757d;
   background-size: cover;
   background-attachment: scroll;
+  background-image: url("../assets/img/home-bg.jpg");
 }
 header.masthead:before {
   content: "";
@@ -11136,7 +11137,4 @@ header.masthead .post-heading .meta a {
   .post-preview > a > .post-title {
     font-size: 2.25rem;
   }
-}
-#indexPageHeader {
-  background-image: url(".\static\assets\img\home-bg.jpg");
 }
