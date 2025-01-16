@@ -11016,6 +11016,7 @@ header.masthead.about {
 header.masthead.contact {
   background-image: url("../assets/img/contact-bg.jpg");
 }
+
 header.masthead:before {
   content: "";
   position: absolute;
