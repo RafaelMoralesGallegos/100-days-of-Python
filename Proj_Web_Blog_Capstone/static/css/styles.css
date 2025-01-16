@@ -11006,7 +11006,15 @@ header.masthead {
   background-color: #6c757d;
   background-size: cover;
   background-attachment: scroll;
+}
+header.masthead.home {
   background-image: url("../assets/img/home-bg.jpg");
+}
+header.masthead.about {
+  background-image: url("../assets/img/about-bg.jpg");
+}
+header.masthead.contact {
+  background-image: url("../assets/img/contact-bg.jpg");
 }
 header.masthead:before {
   content: "";
