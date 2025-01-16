@@ -23,5 +23,14 @@ def get_contact():
     return render_template("contact.html")
 
 
+@app.route("/post/<int:id>")
+def get_post(id):
+    post = None
+    for blog in data:
+        if blog["id"] == id:
+            post = blog
+    return render_template("post.html", post=post)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
