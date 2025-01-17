@@ -34,12 +34,22 @@ class MyForm(FlaskForm):
     email = StringField(
         label="What is your Email?",
         validators=[DataRequired(), Length(min=6), Email()],
+        render_kw={
+            "class": "form-control form-control-lg",
+            "placeholder": "Enter your email",
+        },
     )
     password = PasswordField(
         label="What is your Password?",
         validators=[DataRequired(), Length(min=8, max=12)],
+        render_kw={
+            "class": "form-control form-control-lg",
+            "placeholder": "Enter your password",
+        },
     )
-    submit = SubmitField(label="Log in")
+    submit = SubmitField(
+        label="Log in", render_kw={"class": "btn btn-primary btn-lg w-100"}
+    )
 
 
 @app.route("/")

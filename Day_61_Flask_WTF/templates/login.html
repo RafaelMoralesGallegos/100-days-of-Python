@@ -1,38 +1,16 @@
-<!DOCTYPE HTML>
-<html lang="en">
-  <head>
-    <meta name="description" content="To login for secret">
-    <meta name="keywords" content="Secret, WTF Froms, tutorial">
-    <title>Login</title>
-    {{ bootstrap.load_css() }}
-  </head>
-  <style>
-		span.error {
-			color: red
-		}
-  </style>
-  <body>
-    <div class="container">
-      <h1>Login</h1>
-      <!-- This is where our form will go. -->
-      <br />
-      <form action='{{ url_for("login") }}' method="post" novalidate>
-        {{ form.csrf_token }}
-        <p>
-          {{ form.email.label }}
-          <br />
-          {{ form.email(size=30) }}
-          {% for err in form.email.errors %}<span class="error">{{ err }}</span>{% endfor %}
-        </p>
-        <p>
-          {{ form.password.label }}
-          <br />
-          {{ form.password(size=30) }}
-          {% for err in form.password.errors %}<span class="error">{{ err }}</span>{% endfor %}
-        </p>
-        {{ form.submit() }}
-      </form>
-    </div>
-    {{ bootstrap.load_js() }}
-  </body>
-</html>
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}
+  Login
+{% endblock title %}
+<style>
+  span.error {
+    color: red
+  }
+</style>
+{% block h1 %}
+  Login
+{% endblock h1 %}
+{% block content %}
+  <div class="col-md-6">{{ render_form(form) }}</div>
+{% endblock content %}
