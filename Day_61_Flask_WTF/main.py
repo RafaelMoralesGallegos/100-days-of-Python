@@ -51,17 +51,17 @@ def login():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        validate_secrets(email, password)
+        if validate_secrets(email, password):
+            return render_template("success.html")
+        else:
+            return render_template("denied.html")
 
     return render_template("login.html", form=form)
 
 
 def validate_secrets(email, password):
     """See if the email and password are the secret"""
-    if email == SECRET_EMAIL and password == SECRET_PASSWORD:
-        pass
-    else:
-        pass
+    return email == SECRET_EMAIL and password == SECRET_PASSWORD
 
 
 if __name__ == "__main__":
