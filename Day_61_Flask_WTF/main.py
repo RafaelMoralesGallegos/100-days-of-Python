@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import DataRequired
 
 """
@@ -20,8 +20,7 @@ This will install the packages from requirements.txt for this project.
 """
 load_dotenv()
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ["WTF_CSRF_SECRET_KEY"]
-print(os.environ["WTF_CSRF_SECRET_KEY"])
+app.secret_key = os.environ["WTF_CSRF_SECRET_KEY"]
 
 
 @app.route("/")
@@ -32,15 +31,15 @@ def home():
 # create Flask_WTF class
 class MyForm(FlaskForm):
     email = StringField("What is your Email?", validators=[DataRequired()])
-    password = StringField("What is your Password?", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    password = PasswordField("What is your Password?", validators=[DataRequired()])
+    submit = SubmitField("Log in")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = MyForm()
     if form.validate_on_submit():
-        name = form.email.data
+        email = form.email.data
         form.email.data = ""
         password = form.password.data
         form.password.data = ""
