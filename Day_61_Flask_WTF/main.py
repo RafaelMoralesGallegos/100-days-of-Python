@@ -1,10 +1,11 @@
 import os
 
+import email_validator
 from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email, Length
 
 """
 Red underlines? Install the required packages first: 
@@ -30,9 +31,13 @@ def home():
 
 # create Flask_WTF class
 class MyForm(FlaskForm):
-    email = StringField(label="What is your Email?", validators=[DataRequired()])
+    email = StringField(
+        label="What is your Email?",
+        validators=[DataRequired(), Length(min=6), Email()],
+    )
     password = PasswordField(
-        label="What is your Password?", validators=[DataRequired()]
+        label="What is your Password?",
+        validators=[DataRequired(), Length(min=8, max=12)],
     )
     submit = SubmitField(label="Log in")
 
