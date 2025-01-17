@@ -4,6 +4,7 @@
     <meta name="description" content="To login for secret">
     <meta name="keywords" content="Secret, WTF Froms, tutorial">
     <title>Login</title>
+    {{ bootstrap.load_css() }}
   </head>
   <style>
 		span.error {
@@ -32,5 +33,6 @@
         {{ form.submit() }}
       </form>
     </div>
+    {{ bootstrap.load_js() }}
   </body>
 </html>

@@ -4,6 +4,7 @@
     <meta name="description" content="Welcome page of secret form">
     <meta name="keywords" content="secret, tutorial, WTForm">
     <title>Secrets</title>
+    {{ bootstrap.load_css() }}
   </head>
   <body>
     <div class="jumbotron">
@@ -13,5 +14,6 @@
         <a class="btn btn-primary btn-lg" href='{{ url_for("login") }}'>Login</a>
       </div>
     </div>
+    {{ bootstrap.load_js() }}
   </body>
 </html>

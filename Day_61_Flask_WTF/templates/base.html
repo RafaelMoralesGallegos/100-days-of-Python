@@ -9,14 +9,8 @@
       {% block title %}
       {% endblock title %}
     </title>
+    {{ bootstrap.load_css() }}
   </head>
-  <style>
-    {% block styling %}
-    body{
-        background: purple;
-    }
-    {% endblock %}
-  </style>
   <body>
     <div class="container">
       <h1>
@@ -26,5 +20,6 @@
       {% block item_frame %}
       {% endblock item_frame %}
     </div>
+    {{ bootstrap.load_js() }}
   </body>
 </html>

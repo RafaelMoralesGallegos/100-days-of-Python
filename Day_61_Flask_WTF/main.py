@@ -3,6 +3,7 @@ import os
 import email_validator
 from dotenv import load_dotenv
 from flask import Flask, render_template
+from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
@@ -21,6 +22,7 @@ This will install the packages from requirements.txt for this project.
 """
 load_dotenv()
 app = Flask(__name__)
+bootstrap = Bootstrap5(app)
 app.secret_key = os.environ["WTF_CSRF_SECRET_KEY"]
 
 SECRET_EMAIL = "admin@email.com"
