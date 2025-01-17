@@ -32,5 +32,10 @@ def get_post(id):
     return render_template("post.html", post=post)
 
 
+@app.route("/form-entry", methods=["POST"])
+def get_form_entry():
+    return f"<h1>Succesful message!</h1>"
+
+
 if __name__ == "__main__":
     app.run(debug=True)
