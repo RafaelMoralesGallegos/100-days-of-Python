@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}
+  Login
+{% endblock title %}
+<style>
+  span.error {
+    color: red
+  }
+</style>
+{% block h1 %}
+  Login
+{% endblock h1 %}
+{% block content %}
+  <div class="col-md-6">{{ render_form(form) }}</div>
+{% endblock content %}
