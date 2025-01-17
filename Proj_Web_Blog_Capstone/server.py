@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -18,8 +18,16 @@ def get_about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["POST", "GET"])
 def get_contact():
+    if request.method == "POST":
+        data = request.form
+        print(data["name"])
+        print(data["email"])
+        print(data["phone"])
+        print(data["message"])
+        return render_template("contact.html", msg_sent=True)
+
     return render_template("contact.html")
 
 
@@ -30,11 +38,6 @@ def get_post(id):
         if blog["id"] == id:
             post = blog
     return render_template("post.html", post=post)
-
-
-@app.route("/form-entry", methods=["POST"])
-def get_form_entry():
-    return f"<h1>Succesful message!</h1>"
 
 
 if __name__ == "__main__":

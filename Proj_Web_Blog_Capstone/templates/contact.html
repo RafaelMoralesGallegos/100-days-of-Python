@@ -7,7 +7,11 @@
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
           <div class="page-heading">
-            <h1>Contact Me</h1>
+            {% if msg_sent %}
+              <h1>Successfully sent message</h1>
+            {% else %}
+              <h1>Contact Me</h1>
+            {% endif %}
             <span class="subheading">Have questions? I have answers.</span>
           </div>
         </div>
@@ -27,7 +31,7 @@
             <!-- * * * * * * * * * * * * * * *-->
             <!-- * * Simplified SB Contact Form for the Tutorial* *-->
             <!-- TODO: add an "action" and a "method" to link this form to your main.py -->
-            <form action='{{ url_for("get_form_entry") }}'
+            <form action='{{ url_for("get_contact") }}'
                   method='post'
                   id="contactForm"
                   name="sentMessage">
