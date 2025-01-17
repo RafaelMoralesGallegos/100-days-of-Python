@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Show result of secret search">
+    <meta name="description"
+          content="Page to acces the secret using username and password">
     <meta name="keywords" content="answers, tutorial, wtform">
+    {% block styles %}
+      <!-- Bootstrap CSS -->
+      {{ bootstrap.load_css() }}
+    {% endblock styles %}
     <title>
       {% block title %}
       {% endblock title %}
     </title>
-    {{ bootstrap.load_css() }}
   </head>
   <body>
     <div class="container">
@@ -17,9 +21,12 @@
         {% block h1 %}
         {% endblock h1 %}
       </h1>
-      {% block item_frame %}
-      {% endblock item_frame %}
+      {% block content %}
+      {% endblock content %}
     </div>
-    {{ bootstrap.load_js() }}
+    {% block scripts %}
+      <!-- Optional JavaScript -->
+      {{ bootstrap.load_js() }}
+    {% endblock scripts %}
   </body>
 </html>
