@@ -30,9 +30,11 @@ def home():
 
 # create Flask_WTF class
 class MyForm(FlaskForm):
-    email = StringField("What is your Email?", validators=[DataRequired()])
-    password = PasswordField("What is your Password?", validators=[DataRequired()])
-    submit = SubmitField("Log in")
+    email = StringField(label="What is your Email?", validators=[DataRequired()])
+    password = PasswordField(
+        label="What is your Password?", validators=[DataRequired()]
+    )
+    submit = SubmitField(label="Log in")
 
 
 @app.route("/login", methods=["GET", "POST"])
