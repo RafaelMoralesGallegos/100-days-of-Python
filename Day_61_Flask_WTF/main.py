@@ -23,10 +23,8 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ["WTF_CSRF_SECRET_KEY"]
 
-
-@app.route("/")
-def home():
-    return render_template("index.html")
+SECRET_EMAIL = "admin@email.com"
+SECRET_PASSWORD = "12345678"
 
 
 # create Flask_WTF class
@@ -42,16 +40,28 @@ class MyForm(FlaskForm):
     submit = SubmitField(label="Log in")
 
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = MyForm()
     if form.validate_on_submit():
         email = form.email.data
-        form.email.data = ""
         password = form.password.data
-        form.password.data = ""
+        validate_secrets(email, password)
 
     return render_template("login.html", form=form)
+
+
+def validate_secrets(email, password):
+    """See if the email and password are the secret"""
+    if email == SECRET_EMAIL and password == SECRET_PASSWORD:
+        pass
+    else:
+        pass
 
 
 if __name__ == "__main__":
