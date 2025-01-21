@@ -3,8 +3,8 @@ import csv
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import SelectField, StringField, SubmitField
+from wtforms.validators import URL, DataRequired
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
@@ -13,6 +13,26 @@ Bootstrap5(app)
 
 class CafeForm(FlaskForm):
     cafe = StringField("Cafe name", validators=[DataRequired()])
+    location = StringField(
+        "Cafe Location on Google Maps (URL)", validators=[DataRequired(), URL()]
+    )
+    open_time = StringField("Opening Time e.g. 8AM", validators=[DataRequired()])
+    close_time = StringField("Closing Time e.g. 5:30PM", validators=[DataRequired()])
+    rating = SelectField(
+        "Coffee Rating",
+        choices=["✘", "☕️", "☕️☕️", "☕️☕️☕️", "☕️☕️☕️☕️", "☕️☕️☕️☕️☕️"],  # type: ignore
+        validators=[DataRequired()],
+    )
+    wifi_strength = SelectField(
+        "Wifi Strength Rating",
+        choices=["✘", "💪", "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"],  # type: ignore
+        validators=[DataRequired()],
+    )
+    power = SelectField(
+        "Power Socket Availability",
+        choices=["✘", "🔌", "🔌🔌", "🔌🔌🔌", "🔌🔌🔌🔌", "🔌🔌🔌🔌🔌"],  # type: ignore
+        validators=[DataRequired()],
+    )
     submit = SubmitField("Submit")
 
 
