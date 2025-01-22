@@ -8,9 +8,20 @@
   </head>
   <body>
     <h1>My Library</h1>
-    <ul>
-      <li></li>
-    </ul>
-    <a href="">Add New Book</a>
+    {% if all_books == [] %}
+      <b>Library is empty</b>
+    {% else %}
+      <ul>
+        {% for book in all_books %}
+          <li>
+            <b>
+              {{ book['title'] }} - {{ book['author'] }} - {{ book['rating'] }}/10
+            </b>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <br>
+    <a href='{{ url_for("add") }}'>Add New Book</a>
   </body>
 </html>
