@@ -5,8 +5,6 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 app = Flask(__name__)
 
-all_books = []
-
 
 ##CREATE DATABASE
 class Base(DeclarativeBase):
@@ -40,15 +38,21 @@ with app.app_context():
 
 # CREATE RECORD
 def create_new_book(title, author, rating):
-    with app.app_context():
-        new_book = Book(title=title, author=author, rating=rating)
-        db.session.add(new_book)
-        db.session.commit()
+    new_book = Book(title=title, author=author, rating=rating)  # type: ignore
+    db.session.add(new_book)
+    db.session.commit()
 
 
 @app.route("/")
 def home():
+    all_books = Book.query.order_by(Book.title)
     return render_template("index.html", all_books=all_books)
+
+
+@app.route("/edit", methods=["GET", "POST"])
+def edit():
+    id = request.args.get("id")
+    return "<h1>lol</h1>"
 
 
 @app.route("/add", methods=["GET", "POST"])
