@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Dictionary of Books SQL">
+    <meta name="keywords" content="Dictonary, Books, SQL, python">
+    <title>Library</title>
+  </head>
+  <body>
+    <h1>My Library</h1>
+    {% if all_books.all() == [] %}
+      <b>Library is empty</b>
+    {% else %}
+      <ul>
+        {% for book in all_books %}
+          <li>
+            <b>
+              <a href='{{ url_for("delete", id=book.id) }}'>Delete</a>
+              {{ book.title }} - {{ book.author }} - {{ book.rating }}/10 <a href='{{ url_for("edit", id=book.id) }}'>Edit Rating</a>
+            </b>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <br />
+    <br>
+    <a href='{{ url_for("add") }}'>Add New Book</a>
+  </body>
+</html>
