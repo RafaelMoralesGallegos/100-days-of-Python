@@ -51,8 +51,11 @@ def home():
 
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
-    id = request.args.get("id")
-    return "<h1>lol</h1>"
+    if request.method == "GET":
+        id = request.args.get("id")
+        return render_template("edit.html")
+    else:
+        return home()
 
 
 @app.route("/add", methods=["GET", "POST"])
