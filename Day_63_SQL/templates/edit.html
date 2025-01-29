@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="description" content="Dictionary of Books SQL">
     <meta name="keywords" content="Dictonary, Books, SQL, python">
-    <title>Add Book</title>
+    <title>Edit Rating</title>
   </head>
   <body>
-    <h3>Book Name: add.title</h3>
-    <h3>Current Rating: add.rating</h3>
-    <form action='{{ url_for("edit") }}' method="post">
-      <input type="text" name='rating' placeholder="New Rating"/>
-      <button type="submit">Add Book</button>
+    <h3>Book Name: {{ book.title }}</h3>
+    <h3>Current Rating: {{ book.rating }}</h3>
+    <form action='{{ url_for("edit", id=book.id) }}' method="post">
+      <input type="text" name='rating' placeholder="New Rating" />
+      <button type="submit">Edit</button>
     </form>
   </body>
 </html>

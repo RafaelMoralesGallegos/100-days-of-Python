@@ -53,9 +53,14 @@ def home():
 def edit():
     if request.method == "GET":
         id = request.args.get("id")
-        return render_template("edit.html")
+        book = Book.query.filter_by(id=id).scalar()
+        return render_template("edit.html", book=book)
     else:
-        return home()
+        id = request.args.get("id")
+        boot_to_update = Book.query.filter_by(id=id).scalar()
+        boot_to_update.rating = request.form.get("rating")
+        db.session.commit()
+        return redirect(url_for("home"))
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -67,7 +72,7 @@ def add():
             request.form.get("author"),
             request.form.get("rating"),
         )
-        return home()
+        return redirect(url_for("home"))
 
     return render_template("add.html")
 
