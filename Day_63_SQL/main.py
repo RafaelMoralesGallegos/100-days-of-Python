@@ -43,6 +43,14 @@ def create_new_book(title, author, rating):
     db.session.commit()
 
 
+@app.route("/delete")
+def delete():
+    id = request.args.get("id")
+    Book.query.filter_by(id=id).delete()
+    db.session.commit()
+    return redirect(url_for("home"))
+
+
 @app.route("/")
 def home():
     all_books = Book.query.order_by(Book.title)
