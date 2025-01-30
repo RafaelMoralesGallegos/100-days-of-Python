@@ -28,12 +28,12 @@ db = SQLAlchemy(app)
 class Movie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
-    year: Mapped[int] = mapped_column(Integer)
-    description: Mapped[str] = mapped_column(String(250))
+    year: Mapped[int] = mapped_column(Integer, nullable=False)
+    description: Mapped[str] = mapped_column(String(250), nullable=False)
     rating: Mapped[float] = mapped_column(Float)
     ranking: Mapped[int] = mapped_column(Integer)
     review: Mapped[str] = mapped_column(String(250))
-    img_url: Mapped[str] = mapped_column(String(250))
+    img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
     # Optional: this will allow each book object to be identified by its title when printed.
     def __repr__(self):
@@ -100,6 +100,13 @@ def add():
     return render_template("add.html", form=form)
 
 
+@app.route("/select")
+def select():
+    id = request.args.get("id")
+    print(id)
+    return redirect(url_for("home"))
+
+
 # *Methods
 def get_movie_list(title):
 
@@ -112,6 +119,12 @@ def get_movie_list(title):
 
     response = requests.get(url, headers=headers).json()
     return response["results"]
+
+
+def create_new_movie(title, year, description, img_url):
+    new_movie = Movie(title=title, year=year, description=description, img_url=img_url)  # type: ignore
+    db.session.add(new_movie)
+    db.session.commit()
 
 
 if __name__ == "__main__":
