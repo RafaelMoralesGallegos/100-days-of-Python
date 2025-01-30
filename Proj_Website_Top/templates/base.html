@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="description" content="My Top 10 Movie Website">
+    <meta name="keywords" content="Movies, Top 10, Personal">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     {% block styles %}
@@ -18,12 +20,14 @@
             crossorigin="anonymous" />
       <link rel="stylesheet"
             href="{{ url_for('static', filename='css/styles.css') }}" />
-    {% endblock %}
+    {% endblock styles %}
     <title>
-      {% block title %}{% endblock %}
+      {% block title %}
+      {% endblock title %}
     </title>
   </head>
   <body>
-    {% block content %}{% endblock %}
+    {% block content %}
+    {% endblock content %}
   </body>
 </html>
