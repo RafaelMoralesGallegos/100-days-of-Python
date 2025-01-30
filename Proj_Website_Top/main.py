@@ -12,13 +12,13 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
 Bootstrap5(app)
 
-# CREATE DB
+# *Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///top-movies.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-# CREATE TABLE
+# *Classes
 class Movie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
@@ -34,10 +34,6 @@ class Movie(db.Model):
         return f"<Movie {self.title}>"
 
 
-with app.app_context():
-    db.create_all()
-
-
 class RateMovieForm(FlaskForm):
     rating = StringField("Your Rating Out of 10 e.g 5.5", validators=[DataRequired()])
     review = StringField("Your Review", validators=[DataRequired()])
@@ -49,6 +45,11 @@ class MovieAdd(FlaskForm):
     submit = SubmitField("Add Movie")
 
 
+with app.app_context():
+    db.create_all()
+
+
+# *Apps
 @app.route("/")
 def home():
     """Main Page of app"""
@@ -81,11 +82,19 @@ def delete():
     return redirect(url_for("home"))
 
 
-@app.route("/add")
+@app.route("/add", methods=["GET", "POST"])
 def add():
     form = MovieAdd()
+    if form.validate_on_submit():
+        title = form.title.data
+        print(title)
+
+        return redirect(url_for("home"))
+
     return render_template("add.html", form=form)
 
+
+# *Methods
 
 if __name__ == "__main__":
     app.run(debug=True)
