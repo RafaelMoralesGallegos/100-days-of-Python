@@ -38,10 +38,31 @@ with app.app_context():
     db.create_all()
 
 
+class MovieForm(FlaskForm):
+    rating = StringField("Your Rating Out of 10 e.g 5.5", validators=[DataRequired()])
+    review = StringField("Your Review", validators=[DataRequired()])
+    submit = SubmitField("Done")
+
+
 @app.route("/")
 def home():
     all_movies = Movie.query.order_by(Movie.ranking)
     return render_template("index.html", all_movies=all_movies)
+
+
+@app.route("/edit", methods=["GET", "POST"])
+def edit():
+    if request.method == "GET":
+        id = request.args.get("id")
+        movie = Movie.query.filter_by(id=id).scalar()
+        form = MovieForm()
+        return render_template("edit.html", form=form)
+    # else:
+    #     id = request.args.get("id")
+    #     boot_to_update = Movie.query.filter_by(id=id).scalar()
+    #     boot_to_update.rating = request.form.get("rating")
+    #     db.session.commit()
+    #     return redirect(url_for("home"))
 
 
 if __name__ == "__main__":
