@@ -22,12 +22,12 @@ db = SQLAlchemy(app)
 class Movie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
-    year: Mapped[int] = mapped_column(Integer, nullable=False)
-    description: Mapped[str] = mapped_column(String(250), nullable=False)
-    rating: Mapped[float] = mapped_column(Float, nullable=False)
-    ranking: Mapped[int] = mapped_column(Integer, nullable=False)
-    review: Mapped[str] = mapped_column(String(250), nullable=False)
-    img_url: Mapped[str] = mapped_column(String(250), nullable=False)
+    year: Mapped[int] = mapped_column(Integer)
+    description: Mapped[str] = mapped_column(String(250))
+    rating: Mapped[float] = mapped_column(Float)
+    ranking: Mapped[int] = mapped_column(Integer)
+    review: Mapped[str] = mapped_column(String(250))
+    img_url: Mapped[str] = mapped_column(String(250))
 
     # Optional: this will allow each book object to be identified by its title when printed.
     def __repr__(self):
@@ -66,6 +66,14 @@ def edit():
         return redirect(url_for("home"))
 
     return render_template("edit.html", form=form)
+
+
+@app.route("/delete")
+def delete():
+    id = request.args.get("id")
+    Movie.query.filter_by(id=id).delete()
+    db.session.commit()
+    return redirect(url_for("home"))
 
 
 if __name__ == "__main__":
