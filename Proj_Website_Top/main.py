@@ -13,7 +13,7 @@ app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
 Bootstrap5(app)
 
 # CREATE DB
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://db.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///top-movies.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -34,12 +34,14 @@ class Movie(db.Model):
         return f"<Movie {self.title}>"
 
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    all_movies = Movie.query.order_by(Movie.ranking)
+    return render_template("index.html", all_movies=all_movies)
 
 
 if __name__ == "__main__":
