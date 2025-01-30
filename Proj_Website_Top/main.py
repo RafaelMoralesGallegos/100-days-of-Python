@@ -1,4 +1,7 @@
+import os
+
 import requests
+from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
@@ -7,6 +10,9 @@ from sqlalchemy import Float, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+
+load_dotenv()
+THE_MOVIE_DB_API = os.environ.get("THE_MOVIE_DB_API")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
@@ -87,14 +93,26 @@ def add():
     form = MovieAdd()
     if form.validate_on_submit():
         title = form.title.data
-        print(title)
+        results = get_movie_list(title)
 
-        return redirect(url_for("home"))
+        return render_template("select.html", results=results)
 
     return render_template("add.html", form=form)
 
 
 # *Methods
+def get_movie_list(title):
+
+    url = f"https://api.themoviedb.org/3/search/movie?query={title}&language=en-US"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {THE_MOVIE_DB_API}",
+    }
+
+    response = requests.get(url, headers=headers).json()
+    return response["results"]
+
 
 if __name__ == "__main__":
     app.run(debug=True)
