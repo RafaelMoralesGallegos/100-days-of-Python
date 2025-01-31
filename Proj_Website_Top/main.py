@@ -30,9 +30,9 @@ class Movie(db.Model):
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     description: Mapped[str] = mapped_column(String(250), nullable=False)
-    rating: Mapped[float] = mapped_column(Float)
-    ranking: Mapped[int] = mapped_column(Integer)
-    review: Mapped[str] = mapped_column(String(250))
+    rating: Mapped[float] = mapped_column(Float, nullable=True)
+    ranking: Mapped[int] = mapped_column(Integer, nullable=True)
+    review: Mapped[str] = mapped_column(String(250), nullable=True)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
     # Optional: this will allow each book object to be identified by its title when printed.
@@ -103,7 +103,15 @@ def add():
 @app.route("/select")
 def select():
     id = request.args.get("id")
-    print(id)
+    result = get_movie_data(id)
+    secure_base_url = "https://image.tmdb.org/t/p/w500"
+    create_new_movie(
+        result.get("title"),
+        int(result.get("release_date")[:4]),
+        result.get("overview"),
+        f"{secure_base_url}{result.get("poster_path")}",
+    )
+
     return redirect(url_for("home"))
 
 
@@ -119,6 +127,17 @@ def get_movie_list(title):
 
     response = requests.get(url, headers=headers).json()
     return response["results"]
+
+
+def get_movie_data(id):
+    url = f"https://api.themoviedb.org/3/movie/{id}?language=en-US"
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {THE_MOVIE_DB_API}",
+    }
+
+    response = requests.get(url, headers=headers).json()
+    return response
 
 
 def create_new_movie(title, year, description, img_url):
