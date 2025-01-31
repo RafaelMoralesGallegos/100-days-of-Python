@@ -59,7 +59,11 @@ with app.app_context():
 @app.route("/")
 def home():
     """Main Page of app"""
-    all_movies = Movie.query.order_by(Movie.ranking)
+    all_movies = Movie.query.order_by(Movie.rating.desc())
+    movie_list = all_movies.all()
+    for i, movie in enumerate(movie_list):
+        get_movie_ranking(movie, i)
+
     return render_template("index.html", all_movies=all_movies)
 
 
@@ -102,24 +106,22 @@ def add():
 
 @app.route("/select")
 def select():
-    id = request.args.get("id")
-    result = get_movie_data(id)
+    movie_id = request.args.get("id")
+    result = get_movie_data(movie_id)
     secure_base_url = "https://image.tmdb.org/t/p/w500"
-    create_new_movie(
+    new_movie = create_new_movie(
         result.get("title"),
         int(result.get("release_date")[:4]),
         result.get("overview"),
         f"{secure_base_url}{result.get("poster_path")}",
     )
 
-    return redirect(url_for("home"))
+    return redirect(url_for("edit", id=new_movie.id))
 
 
 # *Methods
 def get_movie_list(title):
-
     url = f"https://api.themoviedb.org/3/search/movie?query={title}&language=en-US"
-
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {THE_MOVIE_DB_API}",
@@ -141,8 +143,17 @@ def get_movie_data(id):
 
 
 def create_new_movie(title, year, description, img_url):
+    """Add new movie to db"""
     new_movie = Movie(title=title, year=year, description=description, img_url=img_url)  # type: ignore
     db.session.add(new_movie)
+    db.session.commit()
+
+    return new_movie
+
+
+def get_movie_ranking(movie, ranking: int):
+    """Update movie ranking according to main file"""
+    movie.ranking = ranking + 1
     db.session.commit()
 
 
