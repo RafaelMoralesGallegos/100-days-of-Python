@@ -108,6 +108,24 @@ def json_cafe(cafe: Cafe) -> dict:
 
 
 # HTTP POST - Create Record
+@app.route("/add", methods=["POST"])
+def post_new_cafe():
+    cafe = Cafe(
+        name=request.form.get("name"),  # type: ignore
+        map_url=request.form.get("map_url"),  # type: ignore
+        img_url=request.form.get("img_url"),  # type: ignore
+        location=request.form.get("loc"),  # type: ignore
+        seats=request.form.get("seats"),  # type: ignore
+        has_toilet=bool(request.form.get("toilet")),  # type: ignore
+        has_wifi=bool(request.form.get("wifi")),  # type: ignore
+        has_sockets=bool(request.form.get("sockets")),  # type: ignore
+        can_take_calls=bool(request.form.get("calls")),  # type: ignore
+        coffee_price=request.form.get("coffee_price"),  # type: ignore
+    )
+    db.session.add(cafe)
+    db.session.commit()
+    return jsonify(response={"success": "Successfully added the new cafe."})
+
 
 # HTTP PUT/PATCH - Update Record
 
