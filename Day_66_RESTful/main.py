@@ -5,19 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Boolean, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-"""
-Install the required packages first: 
-Open the Terminal in PyCharm (bottom left). 
-
-On Windows type:
-python -m pip install -r requirements.txt
-
-On MacOS type:
-pip3 install -r requirements.txt
-
-This will install the packages from requirements.txt for this project.
-"""
-
 app = Flask(__name__)
 
 
@@ -49,6 +36,8 @@ class Cafe(db.Model):
 
 with app.app_context():
     db.create_all()
+
+ERROR = {"Not Found": "Sorry, we don't have a cafe at that location"}
 
 
 @app.route("/")
@@ -82,9 +71,7 @@ def search():
         cafes = [json_cafe(cafe) for cafe in search_cafe]
         return jsonify({"cafes": cafes})
     else:
-        return jsonify(
-            {"error": {"Not Found": "Sorry, we don't have a cafe at that location"}}
-        )
+        return jsonify({"error": ERROR})
 
 
 def json_cafe(cafe: Cafe) -> dict:
@@ -128,7 +115,7 @@ def post_new_cafe():
 
 
 # HTTP PUT/PATCH - Update Record
-@app.route("/update-price/<cafe_id>", methods=["PATCH"])
+@app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
 def update_coffee_price(cafe_id):
     cafe = Cafe.query.filter_by(id=cafe_id).scalar()
     new_price = request.args.get("new_price")
@@ -137,12 +124,27 @@ def update_coffee_price(cafe_id):
         db.session.commit()
         return jsonify({"success": "Successfully updated the price."})
     else:
-        return jsonify(
-            {"error": {"Not Found": "Sorry, we don't have a cafe at that location"}}
-        )
+        return jsonify({"error": ERROR})
 
 
 # HTTP DELETE - Delete Record
+@app.route("/report-closed/<int:cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    cafe = Cafe.query.filter_by(id=cafe_id).scalar()
+    if cafe:
+        api_key = request.args.get("api-key")
+        if api_key == "TopSecretAPIKey":
+            db.session.delete(cafe)
+            db.session.commit()
+            return jsonify({"success": "Successfully delete cafe."})
+        else:
+            return jsonify(
+                {
+                    "error": "Sorry, that's not allowed. Make sure you have the correct api_key."
+                }
+            )
+    else:
+        return jsonify({"error": ERROR})
 
 
 if __name__ == "__main__":
