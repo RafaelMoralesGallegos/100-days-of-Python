@@ -68,17 +68,19 @@ def get_random_cafe():
 
 def get_json_cafe(cafe: Cafe) -> dict:
     cafe_dict = {
-        "id": cafe.id,
+        # "id": cafe.id,
         "name": cafe.name,
         "map_url": cafe.map_url,
         "img_url": cafe.img_url,
         "location": cafe.location,
         "seats": cafe.seats,
-        "has_toilet": cafe.has_toilet,
-        "has_wifi": cafe.has_wifi,
-        "has_sockets": cafe.has_sockets,
-        "can_take_calls": cafe.can_take_calls,
         "coffee_price": cafe.coffee_price,
+        "amenities": {
+            "has_toilet": cafe.has_toilet,
+            "has_wifi": cafe.has_wifi,
+            "has_sockets": cafe.has_sockets,
+            "can_take_calls": cafe.can_take_calls,
+        },
     }
 
     return cafe_dict
