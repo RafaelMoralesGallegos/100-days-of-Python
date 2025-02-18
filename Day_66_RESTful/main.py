@@ -62,11 +62,19 @@ def get_random_cafe():
     random_num = rd.randint(1, Cafe.query.count())
     rand_cafe: Cafe = Cafe.query.get(random_num)  # type: ignore
 
-    cafe = get_json_cafe(rand_cafe)
+    cafe = json_cafe(rand_cafe)
     return jsonify({"cafe": cafe})
 
 
-def get_json_cafe(cafe: Cafe) -> dict:
+@app.route("/all")
+def get_all_cafe():
+    all_cafes = Cafe.query.all()
+    cafes = [json_cafe(cafe) for cafe in all_cafes]
+
+    return jsonify({"cafe": cafes})
+
+
+def json_cafe(cafe: Cafe) -> dict:
     cafe_dict = {
         # "id": cafe.id,
         "name": cafe.name,
