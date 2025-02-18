@@ -63,7 +63,7 @@ def get_random_cafe():
     rand_cafe: Cafe = Cafe.query.get(random_num)  # type: ignore
 
     cafe = json_cafe(rand_cafe)
-    return jsonify({"cafe": cafe})
+    return jsonify({"cafes": cafe})
 
 
 @app.route("/all")
@@ -71,7 +71,20 @@ def get_all_cafe():
     all_cafes = Cafe.query.all()
     cafes = [json_cafe(cafe) for cafe in all_cafes]
 
-    return jsonify({"cafe": cafes})
+    return jsonify({"cafes": cafes})
+
+
+@app.route("/search")
+def search():
+    loc = request.args.get("loc")
+    search_cafe = Cafe.query.where(Cafe.location == loc).all()
+    if search_cafe:
+        cafes = [json_cafe(cafe) for cafe in search_cafe]
+        return jsonify({"cafes": cafes})
+    else:
+        return jsonify(
+            {"error": {"Not Found": "Sorry, we don't have a cafe at that location"}}
+        )
 
 
 def json_cafe(cafe: Cafe) -> dict:
