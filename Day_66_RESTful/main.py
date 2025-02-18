@@ -1,9 +1,11 @@
+import random as rd
+
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Boolean, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Boolean
 
-'''
+"""
 Install the required packages first: 
 Open the Terminal in PyCharm (bottom left). 
 
@@ -14,15 +16,18 @@ On MacOS type:
 pip3 install -r requirements.txt
 
 This will install the packages from requirements.txt for this project.
-'''
+"""
 
 app = Flask(__name__)
+
 
 # CREATE DB
 class Base(DeclarativeBase):
     pass
+
+
 # Connect to Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cafes.db"
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -52,6 +57,32 @@ def home():
 
 
 # HTTP GET - Read Record
+@app.route("/random")
+def get_random_cafe():
+    random_num = rd.randint(1, Cafe.query.count())
+    rand_cafe: Cafe = Cafe.query.get(random_num)  # type: ignore
+
+    cafe = get_json_cafe(rand_cafe)
+    return jsonify({"cafe": cafe})
+
+
+def get_json_cafe(cafe: Cafe) -> dict:
+    cafe_dict = {
+        "id": cafe.id,
+        "name": cafe.name,
+        "map_url": cafe.map_url,
+        "img_url": cafe.img_url,
+        "location": cafe.location,
+        "seats": cafe.seats,
+        "has_toilet": cafe.has_toilet,
+        "has_wifi": cafe.has_wifi,
+        "has_sockets": cafe.has_sockets,
+        "can_take_calls": cafe.can_take_calls,
+        "coffee_price": cafe.coffee_price,
+    }
+
+    return cafe_dict
+
 
 # HTTP POST - Create Record
 
@@ -60,5 +91,5 @@ def home():
 # HTTP DELETE - Delete Record
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
