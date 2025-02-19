@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from flask import Flask, redirect, render_template, url_for
 from flask_bootstrap import Bootstrap5
@@ -13,6 +13,7 @@ from wtforms.validators import URL, DataRequired
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
 Bootstrap5(app)
+ckeditor = CKEditor(app)
 
 
 # CREATE DATABASE
@@ -57,10 +58,36 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post)
 
 
-# TODO: add_new_post() to create a new blog post
-@app.route("/new-post")
+class PostForm(FlaskForm):
+    title = StringField(label="Blog Post Title", validators=[DataRequired()])
+    subtitle = StringField(label="Subtitle", validators=[DataRequired()])
+    author = StringField(label="Author's Name", validators=[DataRequired()])
+    image = StringField(label="Image URL", validators=[DataRequired(), URL()])
+    body = CKEditorField(label="Content", validators=[DataRequired()])
+    submit = SubmitField(label="Submit Post")
+
+
+@app.route("/new-post", methods=["GET", "POST"])
 def add_new_post():
-    return render_template("make-post.html")
+    form = PostForm()
+
+    if form.validate_on_submit():
+        today = datetime.today()
+        date = f"{today.strftime('%B')} {today.day}, {today.year}"
+        new_post = BlogPost(
+            title=form.title.data,  # type: ignore
+            subtitle=form.subtitle.data,  # type: ignore
+            date=date,  # type: ignore
+            body=form.body.data,  # type: ignore
+            author=form.author.data,  # type: ignore
+            img_url=form.image.data,  # type: ignore
+        )
+        db.session.add(new_post)
+        db.session.commit()
+
+        return redirect(url_for("get_all_posts"))
+
+    return render_template("make-post.html", form=form)
 
 
 # TODO: edit_post() to change an existing blog post
