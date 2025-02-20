@@ -74,6 +74,12 @@ class RegisterUser(FlaskForm):
     submit = SubmitField("Register")
 
 
+class LoginUser(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Log In")
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterUser()
@@ -99,10 +105,25 @@ def register():
     return render_template("register.html", form=form)
 
 
-# TODO: Retrieve a user from the database based on their email.
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    form = LoginUser()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form["password"].data
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            if check_password_hash(user.password, password):
+                login_user(user)
+                return redirect(url_for("get_all_posts"))
+            else:
+                flash("Wrong Password - Try again")
+        else:
+            flash("That user dosen't exist")
+
+    return render_template("login.html", form=form)
 
 
 @app.route("/logout")
