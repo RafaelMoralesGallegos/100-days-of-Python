@@ -66,7 +66,6 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-# TODO: Use Werkzeug to hash the user's password when creating a new user.
 class RegisterUser(FlaskForm):
     name = StringField("Username", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
@@ -134,11 +133,16 @@ def logout():
 
 @app.route("/")
 def get_all_posts():
+    admin = False
+    logged = current_user.is_authenticated
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    return render_template(
-        "index.html", all_posts=posts, loggedin=current_user.is_authenticated
-    )
+
+    if current_user.is_authenticated:
+        if current_user.id == 1:
+            admin = True
+
+    return render_template("index.html", all_posts=posts, loggedin=logged, admin=admin)
 
 
 # TODO: Allow logged-in users to comment on posts
