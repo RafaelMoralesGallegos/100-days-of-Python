@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Day_57 web page excersice.">
-    <meta name="keywords"
-          content="python, django, programming, web development, coding tutorials">
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <h2>{{ 5*6 }}</h2>
-    <h3>Random Number: {{ number }}</h3>
-    <a href='{{ url_for("url_blog", number=3) }}'>Go to Blog</a>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Day_57 web page Blog exercise.">
+        <meta name="keywords" content="python, django, Jinja, web development">
+        <title>Day 57, Blog posts</title>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway"
+              rel="stylesheet">
+        <link rel="stylesheet" href="../static/css/styles.css">
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="top">
+                <div class="title">
+                    <h1>My Blog</h1>
+                </div>
+            </div>
+            {% for blog in posts %}
+                <div class="content">
+                    <div class="card">
+                        <h2>{{ blog.title }}</h2>
+                        <p class="text">{{ blog.subtitle }}</p>
+                        <a href='{{ url_for("get_post", id=blog.id) }}'>Read</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </body>
     <footer>
-      <p>© Copyright {{ year }}. Built by Rafael Morales Gallegos</p>
+        <p>Made with ♥️ in London.</p>
     </footer>
-  </body>
 </html>
