@@ -7,9 +7,12 @@ from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
 from sqlalchemy import Integer, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from werkzeug.security import check_password_hash, generate_password_hash
+from wtforms import PasswordField, StringField, SubmitField
+from wtforms.validators import DataRequired, Email
 
 # Import your forms from the forms.py
 from forms import CreatePostForm
@@ -50,7 +53,7 @@ class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
-    password: Mapped[str] = mapped_column(String(250))
+    password: Mapped[str] = mapped_column(String(1000))
     name: Mapped[str] = mapped_column(String(1000))
 
 
@@ -64,9 +67,36 @@ def load_user(user_id):
 
 
 # TODO: Use Werkzeug to hash the user's password when creating a new user.
-@app.route("/register")
+class RegisterUser(FlaskForm):
+    name = StringField("Username", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Register")
+
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    form = RegisterUser()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        password = generate_password_hash(form["password"].data)
+
+        check_user = User.query.filter_by(email=email).first()
+        print(check_user)
+        if check_user:
+            flash("Email already registered!")
+            return redirect(url_for("login"))
+        else:
+            new_user = User(email=email, password=password, name=name)  # type: ignore
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+
+            return redirect(url_for("get_all_posts"))
+
+    return render_template("register.html", form=form)
 
 
 # TODO: Retrieve a user from the database based on their email.
@@ -77,6 +107,7 @@ def login():
 
 @app.route("/logout")
 def logout():
+    logout_user()
     return redirect(url_for("get_all_posts"))
 
 
@@ -84,7 +115,9 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    return render_template("index.html", all_posts=posts)
+    return render_template(
+        "index.html", all_posts=posts, loggedin=current_user.is_authenticated
+    )
 
 
 # TODO: Allow logged-in users to comment on posts
@@ -146,12 +179,12 @@ def delete_post(post_id):
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html", loggedin=current_user.is_authenticated)
 
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    return render_template("contact.html", loggedin=current_user.is_authenticated)
 
 
 if __name__ == "__main__":
