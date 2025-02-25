@@ -1,4 +1,4 @@
-{% include "header.html" %}
+{% include "header.html" %}{% from "bootstrap5/form.html" import render_form %}
 
 <!-- Page Header-->
 <header class="masthead" style="background-image: url('{{post.img_url}}')">
@@ -38,19 +38,22 @@
         <!-- Comments Area -->
 
         <div class="comment">
-          {% if loggedin %}
-          <p>loggedin</p>
+          {% if loggedin %} {{render_form(form)}} {%else%}
+          <p>Only Logged in users can Comment!</p>
           {% endif %}
+          <br />
           <ul class="commentList">
+            {% for comment in post.comments %}
             <li>
               <div class="commenterImage">
-                <img src="../static/assets/img/default-profile.jpg" />
+                <img src="{{ comment.author.email | gravatar }}" />
               </div>
               <div class="commentText">
-                <p>Some comment</p>
-                <span class="date sub-text">comment author name</span>
+                <p>{{comment.body}}</p>
+                <span class="date sub-text">{{comment.author.name}}</span>
               </div>
             </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
