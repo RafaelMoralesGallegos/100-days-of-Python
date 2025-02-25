@@ -10,7 +10,7 @@
           <h2 class="subheading">{{ post.subtitle }}</h2>
           <span class="meta"
             >Posted by
-            <a href="#">{{ post.author }}</a>
+            <a href="#">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
         </div>
@@ -35,11 +35,12 @@
           >
         </div>
         {% endif %}
-
         <!-- Comments Area -->
-        <!-- TODO: Add a CKEditor for commenting below -->
+
         <div class="comment">
-          <!-- TODO: Show all the comments on a post -->
+          {% if loggedin %}
+          <p>loggedin</p>
+          {% endif %}
           <ul class="commentList">
             <li>
               <div class="commenterImage">
